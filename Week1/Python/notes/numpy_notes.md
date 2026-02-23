@@ -485,27 +485,3 @@ plt.plot(a)
 np.sin(np.pi/4) # gives value of sin 45 deg in decimal
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
