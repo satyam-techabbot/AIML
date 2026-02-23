@@ -1,0 +1,7 @@
+2026-02-18 11/17 - ERROR - division by zero
+2026-02-18 11/18 - ERROR - division by zero
+Traceback (most recent call last):
+  File "e:\SatyamYadav\Training\AIML\Week1\Python\practice\logging_prac.py", line 13, in <module>
+    a = 1/0
+        ~^~
+ZeroDivisionError: division by zero

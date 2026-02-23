@@ -1,0 +1,49 @@
+2026-02-18 11/18 - ERROR - division by zero
+Traceback (most recent call last):
+  File "C:\Users\keval\AppData\Local\Temp\ipykernel_15492\2871955230.py", line 5, in <module>
+    a = 1/0
+        ~^~
+ZeroDivisionError: division by zero
+2026-02-18 11/30 - ERROR - division by zero
+Traceback (most recent call last):
+  File "C:\Users\keval\AppData\Local\Temp\ipykernel_15492\3362573655.py", line 3, in <module>
+    a = 1/0
+        ~^~
+ZeroDivisionError: division by zero
+2026-02-18 11/31 - ERROR - division by zero
+Traceback (most recent call last):
+  File "C:\Users\keval\AppData\Local\Temp\ipykernel_15492\3362573655.py", line 3, in <module>
+    a = 1/0
+        ~^~
+ZeroDivisionError: division by zero
+2026-02-18 11/32 - ERROR - division by zero
+Traceback (most recent call last):
+  File "C:\Users\keval\AppData\Local\Temp\ipykernel_15492\2693482143.py", line 4, in <module>
+    a = 1/0
+        ~^~
+ZeroDivisionError: division by zero
+2026-02-18 11/32 - ERROR - division by zero
+Traceback (most recent call last):
+  File "C:\Users\keval\AppData\Local\Temp\ipykernel_15492\1072853228.py", line 4, in <module>
+    a = 1/0
+        ~^~
+ZeroDivisionError: division by zero
+2026-02-18 11/32 - ERROR - division by zero
+Traceback (most recent call last):
+  File "C:\Users\keval\AppData\Local\Temp\ipykernel_15492\1072853228.py", line 4, in <module>
+    a = 1/0
+        ~^~
+ZeroDivisionError: division by zero
+2026-02-18 11/33 - ERROR - division by zero Hello
+Traceback (most recent call last):
+  File "C:\Users\keval\AppData\Local\Temp\ipykernel_15492\2816984946.py", line 4, in <module>
+    a = 1/0
+        ~^~
+ZeroDivisionError: division by zero
+2026-02-18 11/41 - WARNING - logger <Logger __main__ (DEBUG)>
+2026-02-18 11/41 - WARNING - Remain calm!
+2026-02-18 11/41 - DEBUG - This is a debug message
+2026-02-18 11/41 - INFO - This is an info message
+2026-02-18 11/41 - WARNING - This is a warning message
+2026-02-18 11/41 - ERROR - This is an error message
+2026-02-18 11/41 - CRITICAL - This is a critical message
