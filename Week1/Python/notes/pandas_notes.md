@@ -426,5 +426,52 @@ print(result)
 ### concat()
 ```concatenated = pandas.concat([df1, df2])```
 
+## Working with Excel files using Pandas
+Excel files store data in rows and columns, making them useful for managing structured datasets.
 
+> Special requirement from read_excel(): ```pip install pandas openpyxl```
 
+### Reading data from excel
+- Reading Data From Excel
+
+    ```df = pd.read_excel("your_file.xlsx")```
+
+- Specify a specific sheet
+
+    ```df = pd.read_excel("your_file.xlsx", sheet_name=1)```
+
+- Read specific columns:
+    
+    ```df = pd.read_excel("your_file.xlsx", usecols=['ColumnA', 'ColumnB'])```
+
+### Writing Data to Excel
+
+- Write to a new file:
+
+    ```df.to_excel("new_file.xlsx", index=False)```
+
+- Write to multiple sheets in one file:
+
+    ```
+    writer = pd.ExcelWriter('multi_sheet.xlsx', engine='openpyxl')
+    df1.to_excel(writer, sheet_name='Sheet1')
+    df2.to_excel(writer, sheet_name='Sheet2')
+    writer.close()
+    ```
+
+### Write the modified DataFrame back to the Excel file
+
+    ```
+    with pd.ExcelWriter(file_path, mode='a', engine='openpyxl', if_sheet_exists='replace') as writer:
+        df.to_excel(writer, sheet_name='Sheet1', index=False) # index=False prevents writing the DataFrame index to Excel
+
+    ```
+
+#### changing a field in excel:
+```
+df.at[4, 'english'] = 19
+print(df.at[4, 'english'])
+
+with pd.ExcelWriter('pandas_practical.xlsx', mode='a', engine='openpyxl', if_sheet_exists='replace') as writer:
+    df.to_excel(writer, sheet_name='Sheet1', index=False)
+```
