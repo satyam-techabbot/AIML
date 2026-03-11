@@ -737,7 +737,7 @@ def get_settings():
     Create a configuration file (e.g., config.py) and use Pydantic's BaseSettings
     ```
     # config.py
-    from pydantic_settings import BaseSettings
+    from pydantic_settings import BaseSettings, SettingsConfigDict
     from functools import lru_cache
 
     class Settings(BaseSettings):
@@ -745,9 +745,9 @@ def get_settings():
         secret_key: str
         debug_mode: bool = False # Pydantic handles type conversion for bool
 
-    model_config = SettingsConfigDict(
-        env_file = ".env"
-    )
+        model_config = SettingsConfigDict(
+            env_file = ".env"
+        )
 
     # Use lru_cache to create a single, cached instance of settings
     @lru_cache()
