@@ -52,7 +52,7 @@
 
 ### Modern Breakthrough
 * **Transformers (e.g., BERT, GPT)**
-* Excellent for language understanding & generation ([GeeksforGeeks][2])
+* Excellent for language understanding & generation 
 
 ---
 
@@ -236,7 +236,7 @@
 
 ---
 
-## 8. Flair
+### 8. Flair
 * Simple and powerful NLP framework
 
 #### Features:
@@ -340,7 +340,7 @@ Deals with **real-world meaning & intention**
 
 #### Purpose:
 * Go beyond literal meaning
-* Understand **actual intention in context** ([GeeksforGeeks][1])
+* Understand **actual intention in context**
 
 ---
 
@@ -556,7 +556,16 @@ Measures **importance of a word**
 
 #### Working:
 * **TF** → frequency in document
+
+  $
+  TF = \frac{\text{No. of repitition of words in sentence}}{\text{No. of words in sentence}}
+  $
+
 * **IDF** → rarity across documents
+
+  $
+  IDF = \frac{\text{No. of sentence}}{\text{No. of sentences containing the word}}
+  $
 * Formula:
   TF-IDF = TF × log(N / DF)
 
@@ -614,4 +623,1047 @@ print(vectorizer.get_feature_names_out())
 
 ---
 
-## 
+## Text Embedding Techniques
+Text embeddings convert words into **dense numerical vectors** so machines can process language.
+
+Goal:
+* Capture **semantic meaning**
+* Preserve **similarity relationships**
+
+Example:
+* happy → [0.2, -0.1, 0.9, ...]
+* glad → [0.21, -0.08, 0.88, ...]
+
+👉 Similar meaning → similar vectors
+
+---
+
+### Word Embeddings
+Dense vector representations where:
+
+* Similar words → close in vector space
+* Learned from **context**
+
+Unlike one-hot encoding:
+
+* Sparse, no meaning
+* Embeddings capture semantics
+
+---
+
+### Word2Vec
+A neural network-based method to learn embeddings using **context prediction**.
+
+“Words that appear in similar contexts have similar meanings”
+
+So:
+* happy and glad appear in similar sentences
+* Model pushes their vectors closer
+
+---
+
+#### CBOW (Continuous Bag of Words)
+Predict **target word** from **context words**
+
+##### Example:
+Sentence:
+> "I am happy today"
+
+* Input → ["I", "am", "today"]
+* Output → "happy"
+
+##### Mathematical Intuition
+We average context vectors:
+$
+\vec{v}_{context} = \frac{1}{n} \sum \vec{v}_i
+$
+
+Then predict:
+$
+P(w_{target} | context)
+$
+
+Learns:
+* Which words are likely in a given context
+
+##### Advantages
+* Faster training
+* Works well for **frequent words**
+* Smooth representations
+
+##### Disadvantages
+* Ignores word order
+* Poor for rare words
+* Context is averaged → loss of nuance
+
+---
+
+#### Skip-gram
+Predict **context words** from **center word**
+
+##### Example:
+* Input → "happy"
+* Output → ["I", "am", "today"]
+
+##### Mathematical Intuition
+Maximize:
+$
+P(context | word)
+$
+
+Using dot product similarity:
+$
+\vec{v}*{word} \cdot \vec{v}*{context}
+$
+
+If two words share contexts:
+* Their vectors align
+
+##### Advantages
+* Works well for **rare words**
+* Better semantic quality
+* Captures fine relationships
+
+##### Disadvantages
+* Slower than CBOW
+* More computationally expensive
+
+##### CBOW vs Skip-gram
+| Feature    | CBOW     | Skip-gram |
+| ---------- | -------- | --------- |
+| Predicts   | Word     | Context   |
+| Speed      | Fast     | Slower    |
+| Rare words | Poor     | Good      |
+| Accuracy   | Moderate | High      |
+
+---
+
+### Average Word2Vec (AvgWord2Vec)
+To represent a **sentence/document**, take average of word vectors.
+
+Sentence:
+> "I am very happy"
+
+$
+\vec{sentence} = \frac{1}{n} (\vec{I} + \vec{am} + \vec{very} + \vec{happy})
+$
+
+Smooth representation of overall meaning
+
+---
+
+#### Advantages
+* Simple and fast
+* Works surprisingly well for:
+  * classification
+  * similarity tasks
+
+---
+
+#### Disadvantages
+* Ignores word order
+* Loses syntax
+* All words weighted equally (even stopwords)
+
+---
+
+#### Practical Code
+Using Gensim
+
+##### Train Word2Vec
+```python
+from gensim.models import Word2Vec
+
+# Sample data
+sentences = [
+    ["i", "am", "happy"],
+    ["i", "feel", "glad"],
+    ["this", "is", "great"]
+]
+
+# Train model
+model = Word2Vec(sentences, vector_size=100, window=2, min_count=1)
+# Get vector
+print(model.wv["happy"])
+# Similar words
+print(model.wv.most_similar("happy"))
+```
+
+---
+
+##### CBOW vs Skip-gram
+```python
+# CBOW (default)
+model_cbow = Word2Vec(sentences, sg=0)
+
+# Skip-gram
+model_sg = Word2Vec(sentences, sg=1)
+```
+
+---
+
+##### AvgWord2Vec (Sentence Embedding)
+```python
+import numpy as np
+
+def avg_word2vec(sentence, model):
+    vectors = [model.wv[word] for word in sentence if word in model.wv]
+    return np.mean(vectors, axis=0)
+
+sentence = ["i", "am", "happy"]
+print(avg_word2vec(sentence, model))
+```
+
+---
+
+#### Final Summary
+* Word2Vec learns meaning via **context prediction**
+* CBOW → context → word (fast)
+* Skip-gram → word → context (accurate)
+* AvgWord2Vec → simple sentence embedding
+
+--- 
+
+![Course PDF Notes : NLP](./finalNLP.pdf)
+
+---
+
+## Text Summarization
+Text summarization is the process of **automatically reducing large text into a shorter version while preserving key information and meaning**
+
+### Why needed?
+* Huge volume of text (news, blogs, research)
+* Humans cannot process everything efficiently
+
+Goal:
+$
+\text{Summary} = f(\text{Original Text})
+$
+
+Where:
+* shorter length
+* same meaning
+
+---
+
+### Types of Text Summarization
+
+#### Extractive Summarization
+Selects **important sentences directly** from text
+* No new sentence generation
+* Just extraction + concatenation
+
+---
+
+#### Abstractive Summarization
+Generates **new sentences** using understanding of text
+* Paraphrasing
+* Human-like summaries
+
+---
+
+#### Difference
+| Feature      | Extractive         | Abstractive        |
+| ------------ | ------------------ | ------------------ |
+| Output       | Original sentences | New sentences      |
+| Complexity   | Low                | High               |
+| Intelligence | Surface-level      | Deep understanding |
+
+---
+
+### Extractive Summarization (In-depth)
+Assign **importance score to each sentence** → select top-k
+
+---
+
+#### Techniques
+1. Statistical Methods
+    ##### (a) Frequency-Based
+      $
+      Score(S) = \sum_{w \in S} freq(w)
+      $
+
+      Intuition:
+      * Important words appear frequently
+      * Sentences with such words → important
+
+    ##### (b) TF-IDF
+      $
+      TF = \frac{count(w)}{total\ words}
+      $
+
+      $
+      IDF = \log \frac{N}{df(w)}
+      $
+
+      $
+      TF\text{-}IDF = TF \times IDF
+      $
+
+      Intuition:
+      * Frequent in document ✔
+      * Rare globally ✔ → important
+
+2. LSA (Latent Semantic Analysis)
+    Based on:
+    $
+    X = U \Sigma V^T
+    $
+
+    Intuition:
+    * Reduce dimensionality
+    * Capture hidden topics/themes
+
+3. Graph-Based Methods
+    Uses PageRank
+    * Each sentence = node
+    * Edge weight = similarity
+
+    $
+    sim(S_i, S_j) = \frac{S_i \cdot S_j}{||S_i|| , ||S_j||}
+    $
+
+    This is **cosine similarity**
+
+    Ranking Equation:
+    $
+    Score(S_i) = (1-d) + d \sum_{j \in In(S_i)} \frac{Score(S_j)}{Out(S_j)}
+    $
+
+    Sentences important if:
+    * Connected to other important sentences
+
+4. Sentence Scoring
+    Score based on:
+    * Position
+    * Length
+    * Keywords
+    * Similarity
+
+    Advantages
+    * Simple
+    * Fast
+    * No training required
+
+    Disadvantages
+    * No paraphrasing
+    * Redundant sentences
+    * Poor coherence
+
+---
+
+### Abstractive Summarization (In-depth)
+Treat as **sequence generation problem**
+$
+P(summary | text)
+$
+
+Mathematical Formulation
+$
+P(y_1, ..., y_n | x) = \prod_{t=1}^{n} P(y_t | y_1,...,y_{t-1}, x)
+$
+
+Generate summary word-by-word
+
+#### 🔑 Techniques (GFG)
+1. Seq2Seq Models
+    * Encoder → understand input
+    * Decoder → generate summary
+
+2. Attention Mechanism
+    $
+    Attention(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d}}\right)V
+    $
+
+    Intuition:
+    * Focus on relevant parts of text while generating
+
+3. Transformer Models
+    Examples:
+    * BERT
+    * GPT
+
+4. PEGASUS Model
+    Key idea:
+    * Mask important sentences
+    * Train model to predict them
+
+    Why powerful?
+    * Learns summarization directly
+
+    #### Advantages
+    * Human-like summaries
+    * Better coherence
+    * Can rephrase
+
+    #### Disadvantages
+    * Needs large data
+    * Computationally expensive
+    * May hallucinate
+
+---
+
+### Mathematical Intuition (Big Picture)
+#### Extractive = Ranking Problem
+$
+\text{Find } S^* = \arg\max Score(S)
+$
+
+Where score based on:
+* TF-IDF
+* Cosine similarity
+* Graph centrality
+
+---
+
+#### Abstractive = Language Modeling
+$
+\text{Summary} = \arg\max P(Y | X)
+$
+
+Neural networks approximate this probability
+
+---
+
+### Practical Code
+
+#### Extractive (TextRank using spaCy + PyTextRank)
+
+```python
+import spacy
+import pytextrank
+
+nlp = spacy.load("en_core_web_lg")
+nlp.add_pipe("textrank")
+
+text = """Artificial intelligence is transforming industries.
+It improves efficiency and productivity.
+However, it raises ethical concerns."""
+
+doc = nlp(text)
+
+for sent in doc._.textrank.summary(limit_sentences=2):
+    print(sent)
+```
+
+---
+
+#### Abstractive (PEGASUS via Transformers)
+```python id="gfg2"
+from transformers import pipeline
+
+summarizer = pipeline("summarization", model="google/pegasus-xsum")
+
+text = """Artificial intelligence improves efficiency but raises concerns."""
+
+print(summarizer(text, max_length=40, min_length=10))
+```
+
+## Language Models
+A **Language Model (LM)** is a model that assigns a **probability to a sequence of words**.
+
+Goal:
+$
+P(\text{sentence}) = P(w_1, w_2, ..., w_n)
+$
+
+Example:
+* “I am happy” → high probability
+* “happy am I” → low probability
+
+Used in:
+* Text generation
+* Speech recognition
+* Machine translation
+* Chatbots
+
+#### Core Idea
+A language model learns:
+
+“What word comes next?”
+$
+P(w_t | w_1, w_2, ..., w_{t-1})
+$
+
+---
+
+#### Mathematical Formulation
+Using **chain rule of probability**:
+
+$
+P(w_1, w_2, ..., w_n) =
+\prod_{t=1}^{n} P(w_t | w_1,...,w_{t-1})
+$
+
+#### Problem
+Full context is expensive → exponential complexity
+
+#### Solution: Markov Assumption
+Assume:
+
+$
+P(w_t | w_1,...,w_{t-1}) \approx P(w_t | w_{t-1},...,w_{t-n+1})
+$
+
+* Only last *n-1 words matter*
+
+### Types of Language Models
+
+#### Statistical Language Models
+
+##### N-gram Models
+Predict using last (n−1) words
+
+Example: Bigram Model
+$
+P(w_t | w_{t-1}) = \frac{Count(w_{t-1}, w_t)}{Count(w_{t-1})}
+$
+
+Example:
+
+Sentence:
+> "I am happy"
+
+$
+P(\text{happy} | am) = \frac{Count(am, happy)}{Count(am)}
+$
+
+##### Intuition
+Learn from frequency:
+* Words that appear together often → high probability
+
+##### Problems
+* Data sparsity
+* Zero probability (unseen words)
+
+##### Solution: Smoothing
+Example:
+* Laplace smoothing
+
+$
+P = \frac{Count + 1}{Total + V}
+$
+
+Where:
+* (V) = vocabulary size
+
+---
+
+##### Advantages
+* Simple
+* Interpretable
+
+##### Disadvantages
+* Cannot capture long context
+* Memory inefficient
+
+---
+
+#### Neural Language Models
+Use neural networks to learn:
+$
+P(w_t | context)
+$
+
+##### Architecture
+Input:
+* Word embeddings
+
+Model:
+* Feedforward / RNN / Transformer
+
+Output:
+* Probability distribution (softmax)
+
+##### Key Equation
+$
+P(w_t | context) = \text{softmax}(W h + b)
+$
+
+Where:
+* (h) = hidden representation
+
+#### Types of Neural LMs
+1. Feedforward Neural LM
+    * Fixed context window
+
+2. RNN / LSTM LM
+    * Captures sequence
+    * Handles variable length
+
+3. Transformer-based LM
+
+    Examples:
+    * BERT
+    * GPT
+
+Attention Mechanism
+
+$
+Attention(Q,K,V) =
+\text{softmax}\left(\frac{QK^T}{\sqrt{d}}\right)V
+$
+
+Model focuses on relevant words in the sequence
+
+---
+
+### Training Objective
+Maximize likelihood:
+
+$
+\mathcal{L} =
+\sum \log P(w_t | context)
+$
+
+Equivalent to minimizing:
+$
+\text{Cross-Entropy Loss}
+$
+
+---
+
+### Evaluation Metric
+
+#### Perplexity (VERY IMPORTANT)
+$
+PP = \left( \frac{1}{P(w_1,...,w_n)} \right)^{1/n}
+$
+
+#### Intuition
+* Lower perplexity → better model
+* Measures “how surprised” the model is
+
+---
+
+### Deep Mathematical Intuition
+#### Language Modeling = Probability Estimation
+Goal:
+$
+\text{Learn distribution over sequences}
+$
+
+---
+
+#### Embedding + Softmax View
+1. Word → vector:
+$ w \rightarrow \vec{v} $
+
+2. Context → hidden state:
+$ h = f(w_1,...,w_{t-1}) $
+
+3. Score each word:
+$ score(w) = h \cdot \vec{v}_w $
+
+4. Convert to probability:
+$ P(w) = \frac{\exp(score(w))}{\sum \exp(score)} $
+
+---
+
+### Practical Code
+
+#### N-gram 
+```python id="lm1"
+from collections import defaultdict
+
+corpus = ["i am happy", "i am glad"]
+
+bigram = defaultdict(lambda: defaultdict(int))
+
+for sentence in corpus:
+    words = sentence.split()
+    for i in range(len(words)-1):
+        bigram[words[i]][words[i+1]] += 1
+
+# Probability
+def prob(w1, w2):
+    return bigram[w1][w2] / sum(bigram[w1].values())
+
+print(prob("am", "happy"))
+```
+
+---
+
+#### Neural LM (Transformers)
+Using Hugging Face Transformers
+```python id="lm2"
+from transformers import pipeline
+
+generator = pipeline("text-generation", model="gpt2")
+
+print(generator("I am feeling", max_length=10))
+```
+
+---
+
+### Applications
+* Autocomplete (Google, keyboards)
+* Machine translation
+* Speech recognition
+* Chatbots
+
+---
+
+## Named Entity Recognition
+* Named Entity Recognition (NER) is an NLP technique used to **identify and classify important information (entities)** in text.
+* It converts **unstructured text → structured data**.
+
+#### Examples of Entities:
+* Person → *Albert Einstein*
+* Organization → *Google*
+* Location → *India*
+* Date → *5th May 2025*
+* Money → *$100* 
+
+### Importance of NER
+* Helps in:
+  * Information extraction
+  * Search engines
+  * Chatbots
+  * Question answering systems
+  * Data analysis 
+
+### spaCy for NER
+* **spaCy** is a Python NLP library used for fast and efficient text processing. 
+
+### Features:
+* Pre-trained NER models
+* High speed & accuracy
+* Easy API
+* Supports deep learning
+* Custom model training possible
+
+---
+
+### Common Entity Labels in spaCy
+
+| Label   | Meaning           |
+| ------- | ----------------- |
+| PERSON  | Names of people   |
+| ORG     | Organizations     |
+| GPE     | Countries, cities |
+| DATE    | Dates/time        |
+| MONEY   | Monetary values   |
+| PRODUCT | Products          |
+| EVENT   | Events            |
+| LAW     | Legal documents   |
+
+
+### Steps to Implement NER using spaCy
+
+#### Step 1: Install spaCy
+```bash
+pip install spacy
+python -m spacy download en_core_web_sm
+```
+
+#### Step 2: Load Model & Process Text
+```python
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+text = "Apple is buying a UK startup for $1 billion"
+doc = nlp(text)
+```
+
+#### Step 3: Extract Entities
+```python
+for ent in doc.ents:
+    print(ent.text, ent.label_)
+```
+
+#### Example Output:
+```
+Apple ORG
+UK GPE
+$1 billion MONEY
+```
+
+Entities are stored in:
+```python
+doc.ents
+```
+
+---
+
+### How NER Works (Conceptual Steps)
+1. Text analysis
+2. Sentence segmentation
+3. Tokenization
+4. POS tagging
+5. Entity detection
+6. Classification
+7. Model training & improvement 
+
+---
+
+### Case Sensitivity in NER
+* Capitalization affects results:
+```python
+"Apple" → recognized (ORG)
+"apple" → not recognized
+```
+
+Reason: Models rely on patterns learned from training data. 
+
+---
+
+### Custom Named Entities in spaCy
+You can manually add entities:
+```python
+from spacy.tokens import Span
+
+doc = nlp("Tesla is launching a product")
+doc.ents = [Span(doc, 0, 1, label="ORG")]
+
+for ent in doc.ents:
+    print(ent.text, ent.label_)
+```
+
+Useful for domain-specific applications.
+
+---
+
+### Methods of NER
+
+1. Lexicon-Based
+    * Uses dictionary of known entities
+
+2. Rule-Based
+    * Uses patterns and grammar rules
+
+3. Machine Learning-Based
+    * Uses labeled data
+    * Example: CRF (Conditional Random Fields)
+
+4. Deep Learning-Based
+    * Uses neural networks
+    * Higher accuracy with large data 
+
+---
+
+### Visualization of Entities
+```python
+from spacy import displacy
+displacy.render(doc, style="ent")
+```
+Highlights entities in text visually.
+
+---
+
+### Applications of NER
+* Chatbots
+* Resume parsing
+* News analysis
+* Medical data extraction
+* Financial data processing
+
+---
+
+## BERT & Transformers
+* **BERT (Bidirectional Encoder Representations from Transformers)** is a **Transformer-based NLP model** used for understanding language.
+* It uses **encoder-only architecture** (no decoder).
+
+Unlike old models, BERT reads:
+* **Left → Right**
+* **Right → Left (simultaneously)**
+
+✔ This is called **bidirectional context understanding**
+
+---
+
+#### Why BERT is Powerful?
+Traditional models:
+* Read text sequentially (L→R)
+* Limited context
+
+BERT:
+* Looks at **entire sentence at once**
+* Understands meaning using **full context** ([GeeksforGeeks][1])
+
+Example:
+> "bank" in
+> *river bank* vs *bank account*
+> ✔ BERT understands difference using context
+
+---
+
+### Transformer Architecture (Core Idea)
+BERT is based on **Transformers**
+
+Main Components:
+* Input Embeddings
+* Self-Attention
+* Feedforward Neural Network
+* Encoder layers stacked
+
+BERT uses only: **Transformer Encoder**
+
+---
+
+### Mathematical Intuition
+
+#### Word Embeddings
+Each word → vector
+$
+x_i \in \mathbb{R}^d
+$
+
+Sentence becomes matrix:
+$  = [x_1, x_2, ..., x_n] $
+
+#### Self-Attention
+Each word creates 3 vectors:
+* Query (Q)
+* Key (K)
+* Value (V)
+
+$ Q = XW_Q,\quad K = XW_K,\quad V = XW_V $
+
+---
+
+#### Attention Formula:
+$
+Attention(Q,K,V) = softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+$
+
+Intuition:
+* (QK^T) → similarity between words
+* softmax → importance weights
+* Multiply by (V) → final representation
+
+Meaning:
+> "Which words should I focus on?"
+
+---
+
+#### Multi-Head Attention
+Instead of one attention:
+* Use multiple attentions in parallel
+
+$ MultiHead = concat(head_1, ..., head_h)W_O $
+
+Captures different relationships:
+* grammar
+* meaning
+* dependencies
+
+---
+
+#### BERT Architecture Details
+| Model      | Layers | Parameters |
+| ---------- | ------ | ---------- |
+| BERT Base  | 12     | 110M       |
+| BERT Large | 24     | 340M       |
+
+Uses:
+* **[CLS] token** → classification
+* **[SEP] token** → separator
+
+---
+
+### Pre-training of BERT
+BERT is trained on **unlabeled data first**
+
+#### Masked Language Model (MLM)
+* Random words are masked
+* Model predicts missing word
+
+Example:
+> "I love [MASK] learning"
+* Learns context deeply
+* Uses **Softmax probability** over vocabulary ([GeeksforGeeks][1])
+
+---
+
+#### Next Sentence Prediction (NSP)
+* Predicts: Is sentence B related to sentence A?
+
+Helps in:
+* Question answering
+* Sentence relationships ([GeeksforGeeks][1])
+
+---
+
+### Training Objective (Math Intuition)
+Loss =
+$
+L = L_{MLM} + L_{NSP}
+$
+
+Model minimizes:
+* Mask prediction error
+* Sentence relation error
+
+---
+
+### Fine-Tuning
+After pretraining:
+Add small layer + train on task
+
+Examples:
+* Classification
+* NER
+* QA
+
+Same model → many tasks
+
+---
+
+### How BERT Works (Flow)
+1. Input sentence
+2. Tokenization
+3. Convert to embeddings
+4. Pass through encoder layers
+5. Output contextual vectors
+6. Use for downstream task
+
+---
+
+### Applications of BERT
+* Text classification
+* Named Entity Recognition
+* Question answering
+* Chatbots
+* Semantic similarity
+
+---
+
+### BERT vs Traditional Models
+| Feature     | BERT                    | Old Models    |
+| ----------- | ----------------------- | ------------- |
+| Direction   | Bidirectional           | One-direction |
+| Context     | Full sentence           | Limited       |
+| Training    | Pretrained + fine-tuned | Task-specific |
+| Performance | Very high               | Moderate      |
+
+---
+
+### BERT vs GPT 
+| Feature  | BERT          | GPT                  |
+| -------- | ------------- | -------------------- |
+| Type     | Encoder       | Decoder              |
+| Goal     | Understanding | Generation           |
+| Training | MLM + NSP     | Next word prediction |
+
+---
+
+### Key Advantages
+* Deep contextual understanding
+* Transfer learning (pretrain + finetune)
+* Works on many NLP tasks
+* State-of-the-art performance
+
+---
+
+### Limitations
+* Large model (memory heavy)
+* Slow training
+* Not ideal for text generation
+
+### Intuition Summary
+Old NLP:
+> Reads sentence like a human reading word-by-word
+
+BERT:
+> Looks at **whole sentence at once and connects everything**
