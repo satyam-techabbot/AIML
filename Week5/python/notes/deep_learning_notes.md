@@ -429,7 +429,9 @@ So the range is: $[0, \infty)$
    * Many neurons output 0 → efficient and reduces overfitting
 
 4. **Derivative**
-$ \frac{d}{dx} = \begin{cases}1 & x > 0 ,\ 0 & x \leq 0 \end{cases} $
+```math 
+\frac{d}{dx} = \begin{cases}1 & x > 0 ,\ 0 & x \leq 0 \end{cases} 
+```
 
 ---
 
@@ -498,13 +500,13 @@ Both **Leaky ReLU** and **Parametric ReLU (PReLU)** are improvements over the st
 ---
 
 #### 🔹Leaky ReLU
-$
+```math
 f(x) =
 \begin{cases}
 x & x > 0 ,\
 \alpha x & x \leq 0
 \end{cases}
-$
+```
 
 * $\alpha$ is a **small constant** (e.g., 0.01)
 
@@ -542,13 +544,13 @@ Instead of making negative values **0**, it allows a **small slope**, so neurons
 ---
 
 ### 🔹 Parametric ReLU (PReLU)
-$
+```math
 f(x) =
 \begin{cases}
 x & x > 0 ,\
 \alpha x & x \leq 0
 \end{cases}
-$
+```
 
 * ( $\alpha$ ) is **learned during training** (not fixed)
 
@@ -599,7 +601,9 @@ Let the network **learn the best value of ( $\alpha$ )** instead of setting it m
 ## ELU activation function
 The **ELU (Exponential Linear Unit)** is an activation function used in deep learning to improve learning speed and performance compared to functions like ReLU.
 
-$ \text{ELU}(x) = \begin{cases} x & \text{if } x > 0 ,\ \alpha (e^x - 1) & \text{if } x \leq 0 \end{cases} $
+```math
+ \text{ELU}(x) = \begin{cases} x & \text{if } x > 0 ,\ \alpha (e^x - 1) & \text{if } x \leq 0 \end{cases} 
+```
 
 * ( x ): input
 * ( $\alpha$ ): a hyperparameter (usually set to 1)
@@ -657,9 +661,9 @@ The **Softmax activation function** is widely used in deep learning for **multi-
 
 For a vector ( $z = [z_1, z_2, ..., z_n]$ ), Softmax is defined as:
 
-$
+```math
 \text{Softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{n} e^{z_j}}
-$
+```
 
 ---
 
@@ -728,7 +732,9 @@ $ [0.66, 0.24, 0.10] $
 
 #### 🔹 Numerical Stability Trick
 To avoid overflow:
-$ \text{Softmax}(z_i) = \frac{e^{z_i - \max(z)}}{\sum e^{z_j - \max(z)}} $
+```math
+\text{Softmax}(z_i) = \frac{e^{z_i - \max(z)}}{\sum e^{z_j - \max(z)}} 
+```
 
 ---
 
@@ -778,7 +784,9 @@ Start
 * **Loss Function**: Error for a *single data point*
 * **Cost Function**: Average loss over *entire dataset*
 
-$ \text{Cost } J(\theta) = \frac{1}{n} \sum_{i=1}^{n} L(y_i, \hat{y}_i) $
+```math
+\text{Cost } J(\theta) = \frac{1}{n} \sum_{i=1}^{n} L(y_i, \hat{y}_i) 
+```
 
 ---
 
@@ -792,10 +800,14 @@ $ \text{Cost } J(\theta) = \frac{1}{n} \sum_{i=1}^{n} L(y_i, \hat{y}_i) $
 
 #### Equation
 Loss:
-$ L = (y - \hat{y})^2 $
+```math
+L = (y - \hat{y})^2 
+```
 
 Cost:
-$ J = \frac{1}{n} \sum (y_i - \hat{y}_i)^2 $
+```math
+J = \frac{1}{n} \sum (y_i - \hat{y}_i)^2 
+```
 
 #### Advantages
 * Easy to compute and differentiate
@@ -816,10 +828,14 @@ $ J = \frac{1}{n} \sum (y_i - \hat{y}_i)^2 $
 
 #### Equation
 Loss:
-$ L = |y - \hat{y}| $
+```math 
+L = |y - \hat{y}| 
+```
 
 Cost:
-$ J = \frac{1}{n} \sum |y_i - \hat{y}_i| $
+```math
+J = \frac{1}{n} \sum |y_i - \hat{y}_i| 
+```
 
 #### Advantages
 * Robust to **outliers**
@@ -837,15 +853,18 @@ $ J = \frac{1}{n} \sum |y_i - \hat{y}_i| $
 * Uses MSE for small errors, MAE for large errors
 
 #### Equation
-$ 
+```math
 L =
 \begin{cases}
 \frac{1}{2}(y - \hat{y})^2 & \text{if } |y - \hat{y}| \leq \delta ,\
 \delta |y - \hat{y}| - \frac{1}{2}\delta^2 & \text{otherwise}
 \end{cases}
-$ 
+```
 
-Cost: $ J = \frac{1}{n} \sum L_i $ 
+Cost: 
+```math 
+J = \frac{1}{n} \sum L_i 
+``` 
 
 #### Advantages
 * Robust to outliers
@@ -864,7 +883,9 @@ Cost: $ J = \frac{1}{n} \sum L_i $
 * Easier to interpret
 
 #### Equation
-$ RMSE = \sqrt{ \frac{1}{n} \sum (y_i - \hat{y}_i)^2 } $
+```math
+RMSE = \sqrt{ \frac{1}{n} \sum (y_i - \hat{y}_i)^2 } 
+```
 
 #### Advantages
 * Same unit as output
@@ -885,10 +906,14 @@ $ RMSE = \sqrt{ \frac{1}{n} \sum (y_i - \hat{y}_i)^2 } $
 * Used for **binary classification (0/1)**
 
 #### Equation
-$ L = -[y \log(\hat{y}) + (1-y)\log(1-\hat{y})] $
+```math
+L = -[y \log(\hat{y}) + (1-y)\log(1-\hat{y})] 
+```
 
 Cost:
-$ J = \frac{1}{n} \sum L_i $
+```
+J = \frac{1}{n} \sum L_i 
+```
 
 #### Advantages
 * Works well with **sigmoid activation**
@@ -908,10 +933,14 @@ $ J = \frac{1}{n} \sum L_i $
 * Compares full probability distribution
 
 #### Equation
-$ L = - \sum_{j=1}^{k} y_j \log(\hat{y}_j) $
+```math
+L = - \sum_{j=1}^{k} y_j \log(\hat{y}_j) 
+```
 
 Cost:
-$ J = \frac{1}{n} \sum L_i $
+```math
+J = \frac{1}{n} \sum L_i 
+```
 
 #### Advantages
 * Works with **softmax output**
@@ -929,7 +958,9 @@ $ J = \frac{1}{n} \sum L_i $
 * Same as CCE but labels are **integers (not one-hot)**
 
 #### Equation
-$ L = - \log(\hat{y}*{y*{true}}) $
+```math
+L = - \log(\hat{y}*{y*{true}}) 
+```
 
 #### Advantages
 * No need for one-hot encoding
@@ -990,17 +1021,19 @@ SGD is an optimization algorithm used to minimize a loss function in deep learni
 #### 🔹 Mathematical Intuition
 
 We want to minimize a loss function:
-$ L(\theta) = \frac{1}{N} \sum_{i=1}^{N} \ell(x_i, y_i, \theta) $
+```math
+L(\theta) = \frac{1}{N} \sum_{i=1}^{N} \ell(x_i, y_i, \theta) 
+```
 
 Instead of computing full gradient:
-$
+```math
 \nabla L(\theta)
-$
+```
 
 SGD approximates it using one sample:
-$
+```math
 \theta = \theta - \eta \cdot \nabla \ell(x_i, y_i, \theta)
-$
+```
 
 Where:
 
@@ -1044,9 +1077,9 @@ Instead of one sample, updates are computed using a **small batch of data (e.g.,
 
 #### 🔹 Mathematical Intuition
 Gradient is computed over a mini-batch:
-$
+```math
 \theta = \theta - \eta \cdot \frac{1}{B} \sum_{i=1}^{B} \nabla \ell(x_i, y_i, \theta)
-$
+```
 
 Where:
 * $B$ = batch size
@@ -1086,10 +1119,14 @@ Momentum improves SGD by adding a **velocity term** that accumulates past gradie
 
 #### 🔹 Mathematical Intuition
 Velocity update:
-$ v_t = \gamma v_{t-1} + \eta \nabla L(\theta) $
+```math
+v_t = \gamma v_{t-1} + \eta \nabla L(\theta) 
+```
 
 Parameter update:
-$ \theta = \theta - v_t $
+```math
+\theta = \theta - v_t 
+```
 
 Where:
 * $v_t$ = velocity
@@ -1150,14 +1187,14 @@ Frequently updated parameters get smaller learning rates, while infrequent ones 
 
 #### 🔹 Mathematical Intuition
 Accumulate squared gradients:
-$
+```math
 G_t = G_{t-1} + (\nabla L(\theta))^2
-$
+```
 
 Update rule:
-$
+```math
 \theta = \theta - \frac{\eta}{\sqrt{G_t + \epsilon}} \cdot \nabla L(\theta)
-$
+```
 
 Where:
 * $G_t$ = sum of squared past gradients
@@ -1200,14 +1237,14 @@ RMSProp fixes AdaGrad’s issue by using a **moving average of squared gradients
 
 #### 🔹 Mathematical Intuition
 Exponential moving average:
-$
+```math
 E[g^2]*t = \beta E[g^2]*{t-1} + (1 - \beta)(\nabla L(\theta))^2
-$
+```
 
 Update rule:
-$
+```math
 \theta = \theta - \frac{\eta}{\sqrt{E[g^2]_t + \epsilon}} \cdot \nabla L(\theta)
-$
+```
 
 Where:
 * $\beta \approx 0.9$
@@ -1252,25 +1289,25 @@ It is one of the most widely used optimizers in deep learning.
 
 #### 🔹 Mathematical Intuition
 First moment (mean):
-$
+```math
 m_t = \beta_1 m_{t-1} + (1 - \beta_1)\nabla L(\theta)
-$
+```
 
 Second moment (variance):
-$
+```math
 v_t = \beta_2 v_{t-1} + (1 - \beta_2)(\nabla L(\theta))^2
-$
+```
 
 Bias correction:
-$
+```math
 \hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad
 \hat{v}_t = \frac{v_t}{1 - \beta_2^t}
-$
+```
 
 Update rule:
-$
+```math
 \theta = \theta - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \cdot \hat{m}_t
-$
+```
 
 Intuition:
 * Momentum smooths direction
@@ -1326,15 +1363,15 @@ This is especially common in:
 
 #### 🔹 Mathematical Intuition
 In backpropagation, gradients are computed using the chain rule:
-$
+```math
 \frac{\partial L}{\partial \theta} = \prod_{i=1}^{n} \frac{\partial z_i}{\partial z_{i-1}}
-$
+```
 
 If these derivatives are **greater than 1**, repeated multiplication causes:
 
-$
+```math
 \text{Gradient} \rightarrow \infty
-$
+```
 
 Intuition:
 * Multiplying many large numbers → very large gradients
@@ -1364,9 +1401,9 @@ Intuition:
 2. Backpropagation computes gradients
 3. Gradients become very large
 4. Parameter update becomes huge:
-   $
+  ```math
    \theta = \theta - \eta \cdot \text{very large gradient}
-   $
+  ```
 5. Model overshoots optimal solution
 
 ---
@@ -1375,7 +1412,10 @@ Intuition:
 1. Gradient Clipping :
   Keeps gradients within a safe range
 
-  -  Limit gradient values: $ g = \frac{g}{|g|} \cdot \text{threshold} $
+  -  Limit gradient values: 
+  ```math
+   g = \frac{g}{|g|} \cdot \text{threshold} 
+  ```
 
 ---
 
@@ -1569,7 +1609,9 @@ Convolution is the core operation where a **filter (kernel)** slides over the in
 ## 🔸 Mathematical Intuition
 For input (I) and kernel (K):
 
-$ S(i,j) = \sum_m \sum_n I(i+m, j+n) \cdot K(m,n) $
+```math
+S(i,j) = \sum_m \sum_n I(i+m, j+n) \cdot K(m,n) 
+```
 
 Intuition:
 * Multiply corresponding values
@@ -1632,13 +1674,13 @@ Pooling reduces spatial dimensions of feature maps.
 
 #### 🔸 Mathematical Example (Max Pooling)
 From a 2×2 region:
-$
+```math
 \begin{bmatrix}
 1 & 3 \ &
 2 & 4
 \end{bmatrix}
 \rightarrow 4
-$
+```
 
 ---
 
@@ -1664,7 +1706,9 @@ $
 Flattening converts multi-dimensional feature maps into a **1D vector**.
 
 #### Example
-$ \text{Feature map (2×2×3)} \rightarrow \text{vector (12×1)} $
+```math
+\text{Feature map (2×2×3)} \rightarrow \text{vector (12×1)} 
+```
 
 ---
 
@@ -1685,7 +1729,9 @@ These layers connect every neuron to every neuron in the previous layer.
 ---
 
 #### 🔸 Mathematical Form
-$ y = f(Wx + b) $
+```math
+y = f(Wx + b) 
+```
 
 ---
 

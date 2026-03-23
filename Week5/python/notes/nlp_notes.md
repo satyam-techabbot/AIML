@@ -557,15 +557,16 @@ Measures **importance of a word**
 #### Working:
 * **TF** → frequency in document
 
-  $
+  ```math
   TF = \frac{\text{No. of repitition of words in sentence}}{\text{No. of words in sentence}}
-  $
+  ```
+  
 
 * **IDF** → rarity across documents
 
-  $
+  ```math
   IDF = \frac{\text{No. of sentence}}{\text{No. of sentences containing the word}}
-  $
+  ```
 * Formula:
   TF-IDF = TF × log(N / DF)
 
@@ -674,14 +675,14 @@ Sentence:
 
 ##### Mathematical Intuition
 We average context vectors:
-$
+```math
 \vec{v}_{context} = \frac{1}{n} \sum \vec{v}_i
-$
+```
 
 Then predict:
-$
+```math
 P(w_{target} | context)
-$
+```
 
 Learns:
 * Which words are likely in a given context
@@ -707,14 +708,14 @@ Predict **context words** from **center word**
 
 ##### Mathematical Intuition
 Maximize:
-$
+```math
 P(context | word)
-$
+```
 
 Using dot product similarity:
-$
+```math
 \vec{v}*{word} \cdot \vec{v}*{context}
-$
+```
 
 If two words share contexts:
 * Their vectors align
@@ -744,9 +745,9 @@ To represent a **sentence/document**, take average of word vectors.
 Sentence:
 > "I am very happy"
 
-$
+```math
 \vec{sentence} = \frac{1}{n} (\vec{I} + \vec{am} + \vec{very} + \vec{happy})
-$
+```
 
 Smooth representation of overall meaning
 
@@ -836,9 +837,9 @@ Text summarization is the process of **automatically reducing large text into a 
 * Humans cannot process everything efficiently
 
 Goal:
-$
+```math
 \text{Summary} = f(\text{Original Text})
-$
+```
 
 Where:
 * shorter length
@@ -879,26 +880,26 @@ Assign **importance score to each sentence** → select top-k
 #### Techniques
 1. Statistical Methods
     ##### (a) Frequency-Based
-      $
+      ```math
       Score(S) = \sum_{w \in S} freq(w)
-      $
+      ```
 
       Intuition:
       * Important words appear frequently
       * Sentences with such words → important
 
     ##### (b) TF-IDF
-      $
+      ```math
       TF = \frac{count(w)}{total\ words}
-      $
+      ```
 
-      $
+      ```math
       IDF = \log \frac{N}{df(w)}
-      $
+      ```
 
-      $
+      ```math
       TF\text{-}IDF = TF \times IDF
-      $
+      ```
 
       Intuition:
       * Frequent in document ✔
@@ -906,9 +907,9 @@ Assign **importance score to each sentence** → select top-k
 
 2. LSA (Latent Semantic Analysis)
     Based on:
-    $
+    ```math
     X = U \Sigma V^T
-    $
+    ```
 
     Intuition:
     * Reduce dimensionality
@@ -919,16 +920,16 @@ Assign **importance score to each sentence** → select top-k
     * Each sentence = node
     * Edge weight = similarity
 
-    $
+    ```math
     sim(S_i, S_j) = \frac{S_i \cdot S_j}{||S_i|| , ||S_j||}
-    $
+    ```
 
     This is **cosine similarity**
 
     Ranking Equation:
-    $
+    ```math
     Score(S_i) = (1-d) + d \sum_{j \in In(S_i)} \frac{Score(S_j)}{Out(S_j)}
-    $
+    ```
 
     Sentences important if:
     * Connected to other important sentences
@@ -954,14 +955,14 @@ Assign **importance score to each sentence** → select top-k
 
 ### Abstractive Summarization (In-depth)
 Treat as **sequence generation problem**
-$
+```math
 P(summary | text)
-$
+```
 
 Mathematical Formulation
-$
+```math
 P(y_1, ..., y_n | x) = \prod_{t=1}^{n} P(y_t | y_1,...,y_{t-1}, x)
-$
+```
 
 Generate summary word-by-word
 
@@ -971,9 +972,9 @@ Generate summary word-by-word
     * Decoder → generate summary
 
 2. Attention Mechanism
-    $
+    ```math
     Attention(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d}}\right)V
-    $
+    ```
 
     Intuition:
     * Focus on relevant parts of text while generating
@@ -1005,9 +1006,9 @@ Generate summary word-by-word
 
 ### Mathematical Intuition (Big Picture)
 #### Extractive = Ranking Problem
-$
+```math
 \text{Find } S^* = \arg\max Score(S)
-$
+```
 
 Where score based on:
 * TF-IDF
@@ -1017,9 +1018,9 @@ Where score based on:
 ---
 
 #### Abstractive = Language Modeling
-$
+```math
 \text{Summary} = \arg\max P(Y | X)
-$
+```
 
 Neural networks approximate this probability
 
@@ -1063,9 +1064,9 @@ print(summarizer(text, max_length=40, min_length=10))
 A **Language Model (LM)** is a model that assigns a **probability to a sequence of words**.
 
 Goal:
-$
+```math
 P(\text{sentence}) = P(w_1, w_2, ..., w_n)
-$
+```
 
 Example:
 * “I am happy” → high probability
@@ -1081,19 +1082,19 @@ Used in:
 A language model learns:
 
 “What word comes next?”
-$
+```math
 P(w_t | w_1, w_2, ..., w_{t-1})
-$
+```
 
 ---
 
 #### Mathematical Formulation
 Using **chain rule of probability**:
 
-$
+```math
 P(w_1, w_2, ..., w_n) =
 \prod_{t=1}^{n} P(w_t | w_1,...,w_{t-1})
-$
+```
 
 #### Problem
 Full context is expensive → exponential complexity
@@ -1101,9 +1102,9 @@ Full context is expensive → exponential complexity
 #### Solution: Markov Assumption
 Assume:
 
-$
+```math
 P(w_t | w_1,...,w_{t-1}) \approx P(w_t | w_{t-1},...,w_{t-n+1})
-$
+```
 
 * Only last *n-1 words matter*
 
@@ -1115,18 +1116,18 @@ $
 Predict using last (n−1) words
 
 Example: Bigram Model
-$
+```math
 P(w_t | w_{t-1}) = \frac{Count(w_{t-1}, w_t)}{Count(w_{t-1})}
-$
+```
 
 Example:
 
 Sentence:
 > "I am happy"
 
-$
+```math
 P(\text{happy} | am) = \frac{Count(am, happy)}{Count(am)}
-$
+```
 
 ##### Intuition
 Learn from frequency:
@@ -1140,9 +1141,9 @@ Learn from frequency:
 Example:
 * Laplace smoothing
 
-$
+```math
 P = \frac{Count + 1}{Total + V}
-$
+```
 
 Where:
 * (V) = vocabulary size
@@ -1161,9 +1162,9 @@ Where:
 
 #### Neural Language Models
 Use neural networks to learn:
-$
+```math
 P(w_t | context)
-$
+```
 
 ##### Architecture
 Input:
@@ -1176,9 +1177,9 @@ Output:
 * Probability distribution (softmax)
 
 ##### Key Equation
-$
+```math
 P(w_t | context) = \text{softmax}(W h + b)
-$
+```
 
 Where:
 * (h) = hidden representation
@@ -1199,10 +1200,10 @@ Where:
 
 Attention Mechanism
 
-$
+```math
 Attention(Q,K,V) =
 \text{softmax}\left(\frac{QK^T}{\sqrt{d}}\right)V
-$
+```
 
 Model focuses on relevant words in the sequence
 
@@ -1211,24 +1212,24 @@ Model focuses on relevant words in the sequence
 ### Training Objective
 Maximize likelihood:
 
-$
+```math
 \mathcal{L} =
 \sum \log P(w_t | context)
-$
+```
 
 Equivalent to minimizing:
-$
+```math
 \text{Cross-Entropy Loss}
-$
+```
 
 ---
 
 ### Evaluation Metric
 
 #### Perplexity (VERY IMPORTANT)
-$
+```math
 PP = \left( \frac{1}{P(w_1,...,w_n)} \right)^{1/n}
-$
+```
 
 #### Intuition
 * Lower perplexity → better model
@@ -1239,24 +1240,32 @@ $
 ### Deep Mathematical Intuition
 #### Language Modeling = Probability Estimation
 Goal:
-$
+```math
 \text{Learn distribution over sequences}
-$
+```
 
 ---
 
 #### Embedding + Softmax View
 1. Word → vector:
-$ w \rightarrow \vec{v} $
+```math 
+w \rightarrow \vec{v} 
+```
 
 2. Context → hidden state:
-$ h = f(w_1,...,w_{t-1}) $
+```math
+h = f(w_1,...,w_{t-1}) 
+```
 
 3. Score each word:
-$ score(w) = h \cdot \vec{v}_w $
+```math
+score(w) = h \cdot \vec{v}_w 
+```
 
 4. Convert to probability:
-$ P(w) = \frac{\exp(score(w))}{\sum \exp(score)} $
+```math 
+P(w) = \frac{\exp(score(w))}{\sum \exp(score)} 
+```
 
 ---
 
@@ -1479,12 +1488,13 @@ Traditional models:
 
 BERT:
 * Looks at **entire sentence at once**
-* Understands meaning using **full context** ([GeeksforGeeks][1])
+* Understands meaning using **full context**
 
 Example:
 > "bank" in
 > *river bank* vs *bank account*
-> ✔ BERT understands difference using context
+
+> BERT understands difference using context
 
 ---
 
@@ -1505,12 +1515,14 @@ BERT uses only: **Transformer Encoder**
 
 #### Word Embeddings
 Each word → vector
-$
+```math
 x_i \in \mathbb{R}^d
-$
+```
 
 Sentence becomes matrix:
-$  = [x_1, x_2, ..., x_n] $
+```math 
+ = [x_1, x_2, ..., x_n] 
+```
 
 #### Self-Attention
 Each word creates 3 vectors:
@@ -1518,14 +1530,16 @@ Each word creates 3 vectors:
 * Key (K)
 * Value (V)
 
-$ Q = XW_Q,\quad K = XW_K,\quad V = XW_V $
+```math 
+Q = XW_Q,\quad K = XW_K,\quad V = XW_V 
+```
 
 ---
 
 #### Attention Formula:
-$
+```math
 Attention(Q,K,V) = softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-$
+```
 
 Intuition:
 * (QK^T) → similarity between words
@@ -1541,7 +1555,9 @@ Meaning:
 Instead of one attention:
 * Use multiple attentions in parallel
 
-$ MultiHead = concat(head_1, ..., head_h)W_O $
+```math
+MultiHead = concat(head_1, ..., head_h)W_O 
+```
 
 Captures different relationships:
 * grammar
@@ -1572,7 +1588,7 @@ BERT is trained on **unlabeled data first**
 Example:
 > "I love [MASK] learning"
 * Learns context deeply
-* Uses **Softmax probability** over vocabulary ([GeeksforGeeks][1])
+* Uses **Softmax probability** over vocabulary
 
 ---
 
@@ -1581,15 +1597,15 @@ Example:
 
 Helps in:
 * Question answering
-* Sentence relationships ([GeeksforGeeks][1])
+* Sentence relationships 
 
 ---
 
 ### Training Objective (Math Intuition)
 Loss =
-$
+```math
 L = L_{MLM} + L_{NSP}
-$
+```
 
 Model minimizes:
 * Mask prediction error
