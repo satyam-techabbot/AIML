@@ -1683,3 +1683,222 @@ Old NLP:
 
 BERT:
 > Looks at **whole sentence at once and connects everything**
+
+## Encoder & Decoder
+The **Encoder–Decoder architecture** is a framework used in NLP where:
+* **Encoder** → understands input text
+* **Decoder** → generates output text
+
+Used for:
+* Translation
+* Summarization
+* Question answering
+
+---
+
+### High-Level Flow
+```text
+Input Sentence → Encoder → Context Representation → Decoder → Output Sentence
+```
+
+Example:
+```text
+"Hello" → Encoder → Meaning → Decoder → "Hola"
+```
+
+---
+
+### Encoder
+The **encoder** reads the entire input sequence and converts it into a **contextual representation (vector)**.
+
+#### How Encoder Works (Step-by-Step)
+
+##### Step 1: Tokenization
+* Input sentence → tokens
+```text
+"I love AI" → ["I", "love", "AI"]
+```
+
+##### Step 2: Embedding
+* Tokens → vectors
+
+##### Step 3: Positional Encoding
+* Adds order information
+
+##### Step 4: Self-Attention (Core)
+* Each word looks at all other words
+
+Example:
+```text
+"The cat sat on the mat"
+```
+
+* "sat" attends to "cat"
+
+##### Step 5: Feed Forward Network
+* Adds non-linearity
+
+##### Step 6: Output Representation
+* Produces:
+  * Context-aware embeddings for each token
+
+---
+
+#### Output of Encoder
+Two possibilities:
+##### Old (RNN-based)
+* Single vector (context vector)
+
+##### Modern (Transformer)
+* Sequence of contextual embeddings
+
+---
+
+##### Goal of Encoder
+> Convert raw text → **meaningful representation**
+
+---
+
+### Decoder
+The **decoder** generates output sequence **token-by-token** using:
+* Encoder output
+* Previously generated tokens
+
+#### How Decoder Works (Step-by-Step)
+
+##### Step 1: Input (Shifted Output)
+* Uses previous tokens
+```text
+<start> → "I" → "am" → ...
+```
+
+##### Step 2: Masked Self-Attention
+* Can only see past tokens (not future)
+Ensures:
+> No cheating during generation
+
+##### Step 3: Encoder–Decoder Attention
+* Decoder attends to encoder output
+
+This is crucial:
+* Aligns input and output
+
+Example:
+```text
+Input: "I love AI"
+Output: "Me encanta IA"
+```
+
+* "love" ↔ "encanta"
+
+##### Step 4: Feed Forward Layer
+
+##### Step 5: Output Prediction
+* Softmax → next token probability
+
+##### Step 6: Repeat
+* Generates sequence step-by-step
+
+---
+
+#### Goal of Decoder
+> Generate output sequence based on:
+* Input meaning
+* Previously generated tokens
+
+---
+
+### Attention Types (Important)
+
+#### 1. Self-Attention (Encoder)
+* Input attends to itself
+
+#### 2. Masked Self-Attention (Decoder)
+* Prevents future leakage
+
+#### 3. Cross-Attention (Encoder–Decoder)
+* Decoder attends to encoder output
+
+---
+
+### Architecture Summary
+
+![Encoder Decoder](./images/image4.png)
+
+#### Encoder Block
+* Multi-head self-attention
+* Feed-forward
+* Residual + LayerNorm
+
+#### Decoder Block
+* Masked self-attention
+* Cross-attention
+* Feed-forward
+* Residual + LayerNorm
+
+---
+
+### Types of Models Using This
+
+#### Encoder-Only Models
+* Example: BERT
+* Use:
+  * Classification
+  * Embeddings
+
+#### Decoder-Only Models
+* Example: GPT
+* Use:
+  * Text generation
+
+#### Encoder–Decoder Models
+* Example: T5
+* Use:
+  * Translation
+  * Summarization
+
+---
+
+### Encoder vs Decoder (Clear Difference)
+| Feature   | Encoder                | Decoder                  |
+| --------- | ---------------------- | ------------------------ |
+| Role      | Understand input       | Generate output          |
+| Attention | Full self-attention    | Masked + cross-attention |
+| Input     | Full sentence          | Previous tokens          |
+| Output    | Context representation | Generated text           |
+
+---
+
+### Key Intuition (VERY IMPORTANT)
+Think like this:
+* Encoder = **Reader**
+* Decoder = **Writer**
+
+OR
+
+```text
+Encoder → Understand meaning
+Decoder → Express meaning
+```
+
+---
+
+### Example (End-to-End)
+#### Input:
+```text
+"I am learning AI"
+```
+
+#### Encoder:
+* Understands:
+  * Subject = I
+  * Action = learning
+  * Object = AI
+
+---
+
+#### Decoder:
+Generates:
+```text
+"Je suis en train d'apprendre l'IA"
+```
