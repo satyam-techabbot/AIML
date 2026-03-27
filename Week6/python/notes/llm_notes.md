@@ -232,3 +232,11 @@ OR
 * Claude
 * LLaMA 
 
+## Context Windows
+A context window refers to the span of text (usually in terms of tokens) that a model can consider at one time when making predictions or generating text. 
+
+In simpler terms, it is the "lookback" or the amount of previous information that the model uses to make sense of the current input.
+
+#### Importance of Context Windows
+- Understanding Relationships
+- Text Generation
