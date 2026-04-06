@@ -203,6 +203,92 @@ In production, we no longer store memory in-memory (RAM). We use external databa
 
 ---
 
+### Langchain LCEL memory component
+
+#### 1. The Core Components
+To add memory to an LCEL chain, you need:
+1.  **A Store:** Where the messages live (e.g., `ChatMessageHistory`).
+2.  **A Prompt:** That includes a placeholder for `history`.
+3.  **A Wrapper:** The `RunnableWithMessageHistory` class, which handles the "loading" and "saving" logic automatically.
+
+---
+
+#### 2. Basic Implementation
+In this setup, we define the logic and then wrap it so it knows how to distinguish between different users or sessions.
+
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_community.chat_message_histories import ChatMessageHistory
+
+# 1. Define the LLM and Prompt
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant."),
+    MessagesPlaceholder(variable_name="history"), # Where history will be injected
+    ("human", "{question}")
+])
+
+model = ChatOpenAI(model="gpt-4o")
+
+# 2. Create the Chain
+chain = prompt | model
+
+# 3. Manage State (The Store)
+# In a real app, this would be a database (Redis, Postgres, etc.)
+store = {}
+
+def get_session_history(session_id: str):
+    if session_id not in store:
+        store[session_id] = ChatMessageHistory()
+    return store[session_id]
+
+# 4. The "Magic" Wrapper
+with_message_history = RunnableWithMessageHistory(
+    chain,
+    get_session_history,
+    input_messages_key="question",
+    history_messages_key="history",
+)
+```
+
+#### 3. Running the Chain with Sessions
+When you invoke the chain, you must provide a `session_id`. This allows the AI to remember "User A" while having a fresh conversation with "User B."
+
+```python
+config = {"configurable": {"session_id": "user_123"}}
+
+# First interaction
+response1 = with_message_history.invoke(
+    {"question": "Hi, my name is Gemini."}, 
+    config=config
+)
+
+# Second interaction (It remembers the name)
+response2 = with_message_history.invoke(
+    {"question": "What is my name?"}, 
+    config=config
+)
+
+print(response2.content) # Output: "Your name is Gemini!"
+```
+
+#### 4. Key Differences in LCEL Memory
+Unlike the old "Chain" objects, LCEL memory follows these rules:
+
+* **Explicit Placement:** You **must** use `MessagesPlaceholder` in your prompt template. The chain won't automatically know where to put the old messages.
+* **State Isolation:** Using `session_id` ensures that memory isn't leaked between different users in a web server environment.
+* **Post-Processing:** Since the output of an LCEL chain is often a `BaseMessage` object, you might need to add a `StrOutputParser()` at the end of your chain (`chain = prompt | model | StrOutputParser()`) to get clean text back.
+
+#### 5. Persistence (Moving beyond RAM)
+The example above uses an in-memory dictionary (`store = {}`), which wipes clean if your script restarts. For production in 2026, you would replace `ChatMessageHistory()` with a persistent backend:
+
+* **Redis:** `RedisChatMessageHistory(session_id, url=...)`
+* **Postgres:** `PostgresChatMessageHistory(connection_string, session_id)`
+* **MongoDB:** `MongoDBChatMessageHistory(...)`
+
+---
+
 ## The Shift: From Memory to "State" (LangGraph)
 You must understand that **Memory** is being replaced by **State** in complex agents.
 
@@ -229,12 +315,255 @@ When building a Retrieval-Augmented Generation (RAG) system, memory is applied a
 
 ---
 
-## Common Pitfalls
+### Common Pitfalls
 * **Token Overload:** Blindly passing the entire chat history will eventually crash the model or cost a fortune. Always implement a **Trimming** strategy.
 * **Privacy:** Ensure PII (Personally Identifiable Information) is scrubbed from memory before it hits the vector database.
 * **Context Fragmentation:** If using Summary Memory, ensure the summary is descriptive enough so the LLM doesn't lose the "nuance" of the original conversation.
 
 ---
 
+## Document Loaders with LangChain
+
+* Document loaders in LangChain are used to **convert data from different sources (PDF, CSV, HTML, JSON, etc.) into a standard format called a `Document` object**.
+
+* This standardization helps LLMs **process, analyze, and use external data efficiently**.
+
+---
+
+### Document Object Structure
+
+Each loaded document has:
+* **`page_content`** → actual text
+* **`metadata`** → extra info (source, type, etc.)
+* **`id`** → unique identifier 
+
+This makes all data consistent regardless of origin.
+
+---
+
+### Types of Document Loaders
+
+LangChain supports **200+ loaders**, mainly categorized as:
+
+#### 1. By File Type
+* CSV → each row becomes a document
+* HTML → full page or split by elements
+* Markdown → structured sections
+* JSON → parsed via schema
+* Word (DOCX) → text extraction
+* PDF → multiple parsing strategies 
+
+#### 2. By Data Source
+* Websites (URLs)
+* Wikipedia
+* YouTube
+* GitHub
+* Local files or cloud sources (AWS, Azure) 
+
+---
+
+### Special Loaders
+* **DirectoryLoader** → loads multiple files at once
+* **WikipediaLoader** → fetches articles based on queries
+* Supports **multithreading & batch processing** for efficiency 
+
+---
+
+### Key Features
+* Standardizes data into a **common format**
+* Supports **structured + unstructured data**
+* Works with **many formats and sources**
+* Enables **scalable data ingestion pipelines**
+
+---
+
+### Why It Matters
+Document loaders are the **first step in AI pipelines**, especially:
+* RAG (Retrieval-Augmented Generation)
+* Chatbots with external knowledge
+* Semantic search systems
+* Document Q&A systems
+
+They **bridge raw data → LLM-ready input**.
+
+---
+
+### Final Insight
+> Document loaders don’t store data permanently— they just **load it into memory as structured objects**, which can then be processed, embedded, or stored elsewhere.
+
+*LangChain document loaders convert diverse data sources into standardized `Document` objects so LLMs can use them in workflows like RAG, search, and QA systems.*
 
 
+## LangGraph
+
+**LangGraph for Stateful Workflows** is a framework designed to build **long-running, stateful, and multi-step AI workflows**—especially useful when you need more control than standard chains or pipelines.
+
+---
+
+### What LangGraph Is?
+
+LangGraph is part of the LangChain ecosystem. It lets you model workflows as a **graph of nodes and edges**, where:
+* **Nodes** = functions (LLM calls, tools, logic)
+* **Edges** = transitions between steps
+* **State** = shared memory passed and updated across steps
+
+Unlike simple chains, LangGraph allows:
+* Loops 
+* Branching
+* Persistent memory
+* Human-in-the-loop workflows
+
+---
+
+### Core Concepts
+
+#### 1. State
+A central object (usually a dict or TypedDict) that flows through the graph.
+
+Example:
+```python
+state = {
+  "messages": [],
+  "user_input": "..."
+}
+```
+
+Each node:
+* Reads from state
+* Updates state
+* Passes it forward
+
+#### 2. Nodes
+Functions that operate on the state.
+```python
+def chatbot_node(state):
+    response = llm.invoke(state["messages"])
+    return {"messages": state["messages"] + [response]}
+```
+
+#### 3. Edges (Control Flow)
+Edges define **what runs next**:
+* Linear flow
+* Conditional branching
+* Loops
+
+```python
+graph.add_edge("chatbot", "tool_executor")
+```
+
+#### 4. Conditional Routing
+Dynamic decision-making:
+```python
+def route(state):
+    if "search" in state["messages"][-1]:
+        return "search_node"
+    return "chatbot"
+
+graph.add_conditional_edges("chatbot", route)
+```
+
+#### 5. Cycles (Loops)
+Unlike traditional DAGs, LangGraph supports loops:
+```python
+graph.add_edge("tool_executor", "chatbot")
+```
+
+This enables:
+* Agent-like behavior
+* Iterative reasoning
+* Tool retry loops
+
+---
+
+### Example: Simple Stateful Chat Agent
+```python
+from langgraph.graph import StateGraph
+
+graph = StateGraph(dict)
+
+graph.add_node("chatbot", chatbot_node)
+graph.add_node("tools", tool_node)
+
+graph.set_entry_point("chatbot")
+
+graph.add_conditional_edges(
+    "chatbot",
+    route,
+)
+
+graph.add_edge("tools", "chatbot")
+
+app = graph.compile()
+```
+
+---
+
+### Why Use LangGraph?
+
+#### 1. True Stateful Workflows
+Unlike stateless APIs, LangGraph:
+* Maintains conversation history
+* Tracks intermediate outputs
+* Supports memory across steps
+
+#### 2. Looping & Agents
+Perfect for building:
+* AI agents
+* Tool-using systems
+* Self-correcting pipelines
+
+#### 3. Branching Logic
+You can:
+* Route based on LLM output
+* Create decision trees
+* Implement fallback strategies
+
+#### 4. Human-in-the-Loop
+Pause and resume workflows:
+* Approval steps
+* Manual corrections
+* Async workflows
+
+---
+
+### LangGraph vs Traditional Chains
+
+| Feature       | Chains  | LangGraph |
+| ------------- | ------- | --------- |
+| Linear flow   | ✅       | ✅         |
+| Branching     | ❌       | ✅         |
+| Loops         | ❌       | ✅         |
+| Memory        | Limited | Strong    |
+| Agent control | Limited | Full      |
+
+
+---
+
+### Common Use Cases
+* AI agents with tools (search, DB, APIs)
+* Document processing pipelines
+* Multi-step reasoning systems
+* Stateful chatbots
+* Retry / error-handling workflows
+* Approval-based flows (human review)
+
+---
+
+### Mental Model
+Think of LangGraph like:
+* **Finite State Machine + LLM intelligence**
+* Or **Airflow for AI agents**
+* Or **Backend logic for autonomous systems**
+
+---
+
+### When You Should Use It
+Use LangGraph if:
+* Your workflow is **not strictly linear**
+* You need **memory + iteration**
+* You want **fine-grained control over agent behavior**
+
+Avoid it if:
+* You just need a simple prompt → response pipeline
+
+---

@@ -1,0 +1,6 @@
+langchain
+langchain-groq
+pydantic
+streamlit
+python-dotenv
+guardrails-ai
