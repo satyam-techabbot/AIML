@@ -1,0 +1,7 @@
+langchain
+langgraph
+langchain-groq
+streamlit
+fpdf
+python-dotenv
+logging
