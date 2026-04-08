@@ -377,26 +377,308 @@ That’s exactly how agentic systems work.
 
 ---
 
+## MULTI AGENT SYSTEM
+A **Multi-Agent System** is a system where **multiple intelligent agents interact with each other and their environment** to achieve goals (either individual or shared).
 
+* An **agent** = an autonomous entity that can:
+  * perceive environment
+  * make decisions
+  * take actions
 
+Instead of one “big AI”, MAS uses a **team of smaller specialized AIs**.
 
+---
 
+### Key Components of MAS
 
+#### 1. Agents
+* Independent entities with **own knowledge, goals, and abilities**
+* Can be bots, robots, or software programs 
 
+#### 2. Environment
+* The world where agents operate (physical or virtual)
 
+#### 3. Interaction
+* Agents:
+  * cooperate 
+  * compete 
+  * coordinate 
 
+#### 4. Communication
+* Agents exchange information to:
+  * coordinate tasks
+  * negotiate
+  * share knowledge
 
+---
 
+### Types of Multi-Agent Systems
 
+#### 1. Cooperative MAS
+* All agents work toward **same goal**
+* Example: rescue drones
 
+#### 2. Competitive MAS
+* Agents compete for **limited resources**
+* Example: stock trading bots
 
+#### 3. Hierarchical MAS
+* Structured like a company:
+  * managers + workers
 
+#### 4. Heterogeneous MAS
+* Agents have **different roles and skills** 
 
+---
+
+### Architectures of MAS
+
+#### Reactive
+* Fast response, no deep thinking
+* Example: obstacle-avoiding robot
+
+#### Deliberative (Cognitive)
+* Uses reasoning, planning
+* Example: AI assistants
+
+#### Hybrid
+* Combines both
+* Example: self-driving cars
+
+---
+
+### Behavior in MAS
+Agents can show different behaviors:
+* **Autonomous** → act independently
+* **Cooperative** → work together
+* **Competitive** → conflict-based
+* **Adaptive** → learn from experience
+* **Emergent** → complex behavior from simple rules
+
+---
+
+### Structures of MAS
+How agents are organized:
+
+#### 1. Flat Structure
+* All agents equal (peer-to-peer)
+
+#### 2. Hierarchical
+* Command chain (top-down control)
+
+#### 3. Holonic
+* Agents grouped into sub-units (modular system)
+
+#### 4. Network / Organizational
+* Dynamic teams formed as needed
+
+---
+
+### How MAS Works (Simple Flow)
+1. Each agent observes environment
+2. Makes decisions locally
+3. Communicates with others
+4. Coordinates actions
+5. Achieves global objective
+
+Key idea: **local intelligence → global intelligence**
+
+---
+
+### Real-World Applications
+
+#### Robotics
+* Multiple robots in warehouses or rescue missions
+
+#### Smart Cities
+* Traffic lights + autonomous cars coordination
+
+#### Finance
+* Trading bots competing/cooperating
+
+#### Healthcare
+* Hospital resource optimization
+
+#### Gaming
+* Intelligent NPCs
+
+#### Cybersecurity
+* Distributed threat detection 
+
+---
+
+### Advantages of MAS
+* **Decentralization** → no single point of failure
+* **Scalability** → easy to add more agents
+* **Flexibility** → adapts to dynamic environments
+* **Parallelism** → tasks done simultaneously
+* **Emergent intelligence** → complex solutions from simple agents
+
+---
+
+### Challenges of MAS
+* Hard to coordinate agents
+* Communication overhead
+* Conflict between agents
+* Scalability issues at large scale
+* Security & trust problems
+
+---
+
+#### Single-Agent vs Multi-Agent
+| Feature             | Single-Agent | Multi-Agent   |
+| ------------------- | ------------ | ------------- |
+| Control             | Centralized  | Decentralized |
+| Complexity          | Lower        | Higher        |
+| Scalability         | Limited      | High          |
+| Real-world modeling | Weak         | Strong        |
+
+MAS is preferred when problems are:
+* large
+* distributed
+* dynamic
+
+---
+
+### Simple Example
+Think of a **food delivery system**:
+* Agent 1 → takes order
+* Agent 2 → finds restaurant
+* Agent 3 → assigns delivery
+* Agent 4 → tracks route
+
+Together → smooth delivery system
+
+---
+
+## Agent2Agent (A2A)
+**Agent2Agent (A2A)** is a **standard communication protocol** that allows AI agents to:
+* discover each other
+* communicate
+* collaborate on tasks
+
+It enables agents built on different platforms to work together seamlessly. 
+
+---
+
+### Key Idea
+Instead of isolated AI systems, A2A creates a **network of cooperating agents** that can:
+* delegate tasks
+* share results
+* coordinate workflows
+
+---
+
+### Core Components
+
+#### 1. Agent Card
+* A JSON profile describing an agent’s:
+  * capabilities
+  * identity
+  * permissions
+* Helps other agents find and use it
+
+#### 2. Tasks
+* Work units handled by agents
+* Go through stages like:
+  * submitted → working → completed / failed
+
+#### 3. Messages
+* Used for communication
+* Can include text, data, files, etc.
+
+#### 4. Artifacts
+* Final structured outputs of tasks
+
+Together, these enable **organized and trackable collaboration**. 
+
+---
+
+### How A2A Works (Workflow)
+* Uses a **client–server model**:
+  * One agent (client) requests a task
+  * Another agent (server) executes it
+* Roles can switch dynamically
+* Agents communicate continuously during task execution 
+
+---
+
+### Key Features
+* **Autonomy** → agents act independently
+* **Interoperability** → works across systems
+* **Real-time communication** → supports long tasks
+* **Multi-format support** → text, audio, video
+* **Built-in security** → authentication & permissions 
+
+---
+
+### Types of Agent Interaction
+* **Cooperative** → work toward shared goals
+* **Competitive** → compete for resources
+* **Negotiative** → reach agreements
+* **Mediated** → use a central mediator agent 
+
+---
+
+### A2A vs MCP
+* **A2A** → agent-to-agent collaboration
+* **MCP (Model Context Protocol)** → connects AI models to tools/data
+
+A2A focuses on **teamwork between agents**, while MCP focuses on **tool access**. 
+
+---
+
+### Applications
+* Autonomous vehicles coordination
+* Smart grids (energy systems)
+* Supply chain optimization
+* Online marketplaces & auctions 
+
+---
+
+### Advantages
+* Easy integration using web standards (HTTP, JSON-RPC)
+* Flexible and supports multiple data types
+* Secure communication
+* Enables real-time collaboration 
+
+---
+
+### Challenges
+* Coordination between many agents
+* Scalability issues
+* Security & privacy concerns
+* Standardization difficulties 
+
+---
 
 ## Resources
 - https://www.geeksforgeeks.org/artificial-intelligence/agentic-ai-tutorial/
 - https://www.analyticsvidhya.com/blog/2024/10/agentic-design-patterns/
 - https://www.cybage.com/blog/building-intelligent-ai-systems-understanding-agentic-ai-and-design-patterns
+- https://www.geeksforgeeks.org/artificial-intelligence/multi-agent-system-in-ai/
+- https://www.geeksforgeeks.org/artificial-intelligence/agent2agent-a2a/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 - HTML
