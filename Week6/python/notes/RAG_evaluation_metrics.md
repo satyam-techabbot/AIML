@@ -13,9 +13,9 @@ These metrics determine if your vector database is actually surfacing the right 
 * **Context Recall:** Did the system actually find all the necessary information needed to answer the question?
 * **MRR (Mean Reciprocal Rank):** A measure of where the first relevant document appears in the list.
     * Formula: 
-    ```math
-    MRR = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{rank_i}
-    ```
+```math
+MRR = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{rank_i}
+```
 * **Hit Rate:** The percentage of queries for which the correct chunk was retrieved in the top $k$ results.
 
 ---

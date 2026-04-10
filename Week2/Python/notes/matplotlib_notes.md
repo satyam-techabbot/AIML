@@ -94,7 +94,7 @@ markeredgecolor or the shorter mec to set the color of the edge of the markers:
     ```plt.plot(ypoints, linewidth = '20.5')```
 
 - Multiple Lines: You can plot as many lines as you like by simply adding more plt.plot() functions:
-    ```
+    ```python
     plt.plot(y1)
     plt.plot(y2)
     ```
@@ -103,7 +103,7 @@ markeredgecolor or the shorter mec to set the color of the edge of the markers:
 ### Matplotlib Labels and Title
 
 - Create Labels for a Plot : use the xlabel() and ylabel() functions.
-    ```
+    ```python
     plt.xlabel("Average Pulse")
     plt.ylabel("Calorie Burnage")
     ```
@@ -140,7 +140,7 @@ markeredgecolor or the shorter mec to set the color of the edge of the markers:
 ## Matplotlib Subplot
 
 With the subplot() function you can draw multiple plots in one figure:
-```
+```python
 #plot 1:
 x = np.array([0, 1, 2, 3])
 y = np.array([3, 8, 1, 10])
@@ -161,7 +161,7 @@ plt.show()
 ### subplot() Function
 The subplot() function takes three arguments that describes the layout of the figure.
 
-```
+```python
 plt.subplot(1, 2, 1)
 #the figure has 1 row, 2 columns, and this plot is the first plot so 3rd shows index of current plot.
 ```
@@ -176,7 +176,7 @@ You can add a title to each plot with the title() function after calling subplot
 ## Matplotlib Scatter
 With Pyplot, you can use the scatter() function to draw a scatter plot. The scatter() function plots one dot for each observation.
 
-```
+```python
 a = np.arange(0,20,2)
 b = np.arange(20,0,-2)
 plt.scatter(a, b)
@@ -191,7 +191,7 @@ This colormap is called 'viridis' and as you can see it ranges from 0, which is 
 with the keyword argument cmap with the value of the colormap
 You can include the colormap in the drawing by including the plt.colorbar().
 
-```
+```python
 a = np.arange(0,20,2)
 b = np.arange(20,0,-2)
 colors = np.array([0, 10, 20, 30, 40, 45, 50, 55, 60, 70])
@@ -209,7 +209,7 @@ We can have the styling values in array form to apply to individual points.
 ## Matplotlib Bars
 With Pyplot, you can use the bar() function to draw bar graphs:
 
-```
+```python
 a = np.arange(0,20,2)
 b = np.arange(20,0,-2)
 plt.bar(a, b)
@@ -228,14 +228,14 @@ use barh()
 ## Matplotlib Histograms
 A histogram is a graph showing frequency distributions. It is a graph showing the number of observations within each given interval.
 
-```
+```python
 x = np.random.normal(170, 10, 250)
 plt.hist(x)
 ```
 
 ## Matplotlib Pie Charts
 With Pyplot, you can use the pie() function to draw pie charts:
-```
+```python
 plt.pie([20, 20, 20, 20, 20])
 plt.show()
 ```
@@ -263,7 +263,7 @@ plt.savefig('pie_chart.png', dpi=300, bbox_inches='tight')
 ## Matplotlib Image Tutorial
 Using PIL library to open image file. Install using ```pip install pillow```
 
-```
+```python
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
@@ -281,25 +281,25 @@ plt.show()
 ```
 
 ### Importing image data into Numpy arrays
-```
+```python
 from PIL import Image
 imp = np.asarray(Image.open('image.png'))
 # The img obj has the nd array of image
 ```
 
 ### Plotting numpy arrays as images
-```
+```python
 imgplot = plt.imshow(img)
 ```
 
 #### Random image using random np array
-```
+```python
 random_image_array = np.random.random([200, 200])
 plt.imshow(random_image_array, cmap='gist_rainbow')
 ```
 
 ### Applying pseudocolor schemes to image plots
-```
+```python
 lum_img = img[:, :,0]
 plt.imshow(lum_img, cmap='gist_rainbow')
 plt.imshow(lum_img, cmap='hot')

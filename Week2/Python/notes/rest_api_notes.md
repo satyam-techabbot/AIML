@@ -75,7 +75,7 @@ To consume or use api endpoints, we use `requests` library in python.
 ### GET
 GET is a read-only operation, so you shouldn’t use it to modify an existing resource.
 
-```
+```python
 import requests as rq
 api_url = "https://jsonplaceholder.typicode.com/todos/1"
 res = rq.get(api_url)
@@ -85,7 +85,7 @@ print(f"\nResponse header: {res.headers["Content-Type"]}")
 ```
 
 ### POST
-```
+```python
 api_url = "https://jsonplaceholder.typicode.com/todos/"
 todo = {'userId': 1, 'title': 'Hello', 'completed': False}
 res = rq.post(api_url, todo)
@@ -94,13 +94,13 @@ print(res.json())
 ```
 
 We can even set headers :
-```
+```python
 headers =  {"Content-Type":"application/json"}
 response = requests.post(api_url, data=json.dumps(todo), headers=headers)
 ```
 
 ### PUT
-```
+```python
 todo = {'userId': 154, 'title': 'Hello', 'completed': False}
 api_url = "https://jsonplaceholder.typicode.com/todos/10"
 res = rq.put(api_url, json=todo)
@@ -111,7 +111,7 @@ print(res)
 ### PATCH
 Patch differs from put as put changes the whole record or row while patch only changes the specific field.
 
-```
+```python
 todo = {'completed': True}
 res = rq.patch(api_url, json=todo)
 print(res.json())
@@ -119,7 +119,7 @@ print(res)
 ```
 
 ### DELETE
-```
+```python
 res = rq.delete(api_url)
 print(res.json())
 print(res)
@@ -203,7 +203,7 @@ Flask is a Python microframework used to build web applications and REST APIs.
 
 > Installation: ```$ python -m pip install flask```
 
-```
+```python
 # app.py
 from flask import Flask, request, jsonify
 

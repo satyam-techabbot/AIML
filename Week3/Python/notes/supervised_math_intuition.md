@@ -112,6 +112,9 @@ R^2= ESS/TSS
     ```math
     MSE = \sum_{i=1}^w (y - \hat{y})^2/n
     ```
+    $MSE = \sum_{i=1}^w (y - \hat{y})^2/n$
+
+    
     Advantages : 
     - Emphasis on Larger Errors
     - Mathematical Convenience
@@ -136,6 +139,8 @@ R^2= ESS/TSS
     ```math
     RMSE = \sqrt{MSE}
     ```
+    or $ RMSE = \sqrt{MSE} $
+    
     Advantages:
     - Similar Scale to Target Variable
     - Greater Penalty for Large Errors

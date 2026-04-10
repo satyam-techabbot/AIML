@@ -31,7 +31,7 @@ FastAPI stands on the shoulders of giants:
 - Pydantic for the data parts.
 
 ## Installation
-```
+```bash
 python -m venv venv
 .\venv\Scripts\activate
 pip install "fastapi[standard]"
@@ -40,7 +40,7 @@ pip install "fastapi[standard]"
 ## Get Started
 After project installation, create a file main.py.
 
-```
+```python
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -256,7 +256,7 @@ Middleware (after)
 Client Response
 ```
 
-```
+```python
 # This middleware measures how long each request takes to process and attaches that time as a custom HTTP response header
 
 from fastapi import FastAPI, Request
@@ -277,7 +277,7 @@ async def add_process_time_header(request: Request, call_next):
 ### Order of Execution
 Middleware executes in the order added
 
-```
+```python
 app.add_middleware(MiddlewareA)
 app.add_middleware(MiddlewareB)
 
@@ -312,7 +312,7 @@ But that will only allow certain types of communication, excluding everything th
 - Create a list of allowed origins (as strings).
 - Add it as a "middleware" to your FastAPI application.
 
-```
+```python
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -509,7 +509,7 @@ When using OAuth2 + JWT in FastAPI:
 
 ### Example
 
-```
+```python
 # main.py
 from fastapi import FastAPI, Request, Depends, HTTPException, status
 from pydantic import BaseModel
@@ -709,7 +709,7 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
-```
+```python
 # config.py
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
@@ -735,7 +735,7 @@ def get_settings():
 2. Define Settings in a Python File
 
     Create a configuration file (e.g., config.py) and use Pydantic's BaseSettings
-    ```
+    ```python
     # config.py
     from pydantic_settings import BaseSettings, SettingsConfigDict
     from functools import lru_cache
@@ -756,7 +756,7 @@ def get_settings():
     ```
 
 3. Use Settings in Your FastAPI App 
-    ```
+    ```python
     # main.py
     from fastapi import FastAPI, Depends
     from .config import get_settings, Settings
@@ -803,7 +803,7 @@ Simple way to run tasks after returning a response to the client.
 - Task runs in background
 
 ### Example:
-```
+```python
 from fastapi import FastAPI, BackgroundTasks
 
 # bg tasks after send route
@@ -837,7 +837,7 @@ async def send_message(background_tasks: BackgroundTasks):
 If not used "fastapi[standard]", then we have to do ```pip install python-multipart``` for using forms.
 
 ### Pydantic Models for Forms
-```
+```python
 from pydantic import BaseModel
 
 class FormData(BaseModel):
@@ -853,7 +853,7 @@ async def login(data: Annotated[FormData, Form()]): # Accepts form data, validat
 
 In some special use cases, you might want to restrict the form fields to only those declared in the Pydantic model. And forbid any extra fields.
 
-```
+```python
 class FormData(BaseModel):
     username: str
     password: str

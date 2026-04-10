@@ -4,12 +4,12 @@ Seaborn is a popular, high-level Python library for creating attractive and info
 It builds on top of matplotlib and integrates closely with pandas data structures.
 
 ## Installation
-```
+```bash
 python -m pip install seaborn
 ```
 
 Example:
-```
+```python
 # Import seaborn
 import seaborn as sns
 
@@ -70,7 +70,7 @@ Offers a more consistent and flexible API, comprising a collection of composable
 
 In contrast to the existing seaborn functions, the new interface aims to support end-to-end plot specification and customization without dropping down to matplotlib.
 
-```
+```python
 import seaborn.objects as so
 penguins = sns.load_dataset("penguins")
 (
@@ -81,7 +81,7 @@ penguins = sns.load_dataset("penguins")
 > Write seaborn objects within parentheses for : Code Readability and Method Chaining
 
 #### Transforming data before plotting
-```
+```python
 (
     so.Plot(penguins, x="species", y="body_mass_g")
     .add(so.Bar(), so.Agg())
@@ -93,7 +93,7 @@ Sometimes, bars overlap, so we we use so.Dodge(). Dodge class is kind of about m
 
 It’s also possible to apply multiple Move operations in sequence: by using so.Jitter()
 
-```
+```python
 (
     so.Plot(penguins, x="species", y="body_mass_g", color="sex")
     .add(so.Bar(), so.Agg(), so.Dodge(), so.Jitter())
@@ -502,7 +502,7 @@ It is a parameter that allows you to visualize uncertainty or variability in you
     The nonparametric approach to representing uncertainty uses bootstrapping: a procedure where the dataset is randomly resampled with replacement a number of times, and the estimate is recalculated from each resample. ```errorbar="ci"```
 
 - Custom error bars :
-    ```
+    ```python
     penguins = sns.load_dataset("penguins")
     cust_err = lambda x: (x.min(), x.max())
     sns.barplot(
@@ -565,7 +565,7 @@ Many datasets contain multiple quantitative variables, and the goal of an analys
         1. Initialize the grid using FacetGrid()
         2. Map a plotting function
     
-    ```
+    ```python
     attend = sns.load_dataset("attention").query("subject <= 12")
     g = sns.FacetGrid(attend, col="subject", col_wrap=4, height=2, ylim=(0, 10))
     g.map(sns.pointplot, "solutions", "score", order=[1, 2, 3], color=".3", errorbar=None)
@@ -578,7 +578,7 @@ Many datasets contain multiple quantitative variables, and the goal of an analys
         1. Initialize the grid using PairGrid()
         2. Map plotting functions
 
-    ```
+    ```python
     iris = sns.load_dataset("iris")
     g = sns.PairGrid(iris, hue="species")
     g.map_diag(sns.kdeplot)
@@ -589,7 +589,7 @@ Many datasets contain multiple quantitative variables, and the goal of an analys
 ### Seaborn figure styles
 There are five preset seaborn themes: darkgrid, whitegrid, dark, white, and ticks.
 
-```
+```python
 sns.set_style('darkgrid')
 ```
 

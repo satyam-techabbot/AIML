@@ -68,7 +68,7 @@ This is where most business insights come from.
 
 Example code pattern:
 
-```
+```python
 df.groupby("Category")["Purchase Amount (USD)"].mean().sort_values(ascending=False)
 ```
 
@@ -85,7 +85,7 @@ Use:
 * Heatmaps
 
 Example:
-```
+```python
 pd.crosstab(df["Gender"], df["Category"], normalize="index") * 100
 ```
 
@@ -98,7 +98,7 @@ This answers:
 Both matter.
 
 Example:
-```
+```python
 # Average purchase
 df.groupby("Category")["Purchase Amount (USD)"].mean()
 
