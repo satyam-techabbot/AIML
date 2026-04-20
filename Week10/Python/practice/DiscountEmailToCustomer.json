@@ -1,0 +1,172 @@
+{
+  "name": "DiscountEmailToCustomer",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-order-test",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -592,
+        -32
+      ],
+      "id": "dbdea3c1-6226-4135-a819-ddd2802a004a",
+      "name": "Webhook",
+      "webhookId": "ba81d4bf-3810-41ce-bfb9-529d4f030435"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "pythonNative",
+        "pythonCode": "data = _item[\"json\"][\"body\"]\n\nemail = data.get(\"email\")\nname = data.get(\"customer_name\", \"Valued Customer\").title()\nprice = float(data.get(\"total_price\", 0))\n\nreturn {\n    \"email\": email,\n    \"name\": name,\n    \"price\": price,\n    \"discount_code\": \"WELCOME10\" if price >= 100 else \"\"\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -384,
+        -32
+      ],
+      "id": "95bf3e16-4616-4e08-a8bb-5ec41d1d5ae2",
+      "name": "Code in Python"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4fecaa96-a933-427c-8475-c4f62a000cfe",
+              "leftValue": "={{$json[\"price\"]}}",
+              "rightValue": 100,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -176,
+        -32
+      ],
+      "id": "a8ecb099-16da-4cda-9031-b8b30941d32c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fromEmail": "Satyam.Yadav@techabbot.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "Thank you for your purchase ❤️",
+        "html": "=Hi {{ $json.name }},\n\nThank you for your purchase!\n\nWe truly appreciate your support 💙\n\nStay tuned — exciting discounts are coming soon!\n\nBest regards",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        32,
+        64
+      ],
+      "id": "60e63ace-9263-4e12-88a2-9d9648b9c246",
+      "name": "Send an Email1",
+      "webhookId": "258c675c-a5c9-4b67-aeb5-a05ab0753e64",
+      "credentials": {
+        "smtp": {
+          "id": "WUOIQWyBOFPNnnO5",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "Satyam.Yadav@techabbot.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "🎉 You got a discount!",
+        "html": "=Hi {{ $json.name }},\n\nThanks for your purchase!\n\nHere’s your 10% discount coupon:\nCode: {{ $json.discount_code }}\nUse it on your next purchase.\n\nCheers!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        32,
+        -128
+      ],
+      "id": "84197405-5ea6-4f57-9393-9e510a2d72ab",
+      "name": "Send an Email",
+      "webhookId": "9b53c538-fa76-4272-b5e4-e5c7e45f49e3",
+      "credentials": {
+        "smtp": {
+          "id": "WUOIQWyBOFPNnnO5",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in Python",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send an Email1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "de920bc1-d235-4e3d-a04c-06b10d87e63c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "273518ce38626b9ee0e3f9137eda082981972c850f1f127ac88e7e32bb5f690f"
+  },
+  "id": "oKd7HIZVQSYwKhEM",
+  "tags": []
+}
