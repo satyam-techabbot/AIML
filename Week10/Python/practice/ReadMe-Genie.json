@@ -1,0 +1,305 @@
+{
+  "name": "ReadMe-Genie",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-readme",
+        "responseMode": "lastNode",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -704,
+        -208
+      ],
+      "id": "0af8a29e-0c2d-46f9-9fad-a8d9ef25b1cf",
+      "name": "Webhook",
+      "webhookId": "514c385f-6802-4c42-baf7-9c8f0bf15986"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "pythonNative",
+        "pythonCode": "data = _item[\"json\"][\"body\"]\n\nurl = data.get(\"repo_url\")\n\n# Clean URL\nparts = url.replace(\"https://github.com/\", \"\").strip(\"/\").split(\"/\")\n\nowner = parts[0]\nrepo = parts[1]\n\nreturn {\n    \"owner\": owner,\n    \"repo\": repo\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -496,
+        -208
+      ],
+      "id": "6177c617-472a-4adf-a599-acc3903b606b",
+      "name": "Code in Python"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.github.com/repos/{{$json.owner}}/{{$json.repo}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -288,
+        -208
+      ],
+      "id": "f818b7e0-11cb-44da-af2e-13e9dad9b85e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.github.com/repos/{{ $json.owner.login }}/{{ $json.name }}/git/trees/{{ $json.default_branch }}?recursive=1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -80,
+        -208
+      ],
+      "id": "de7f0a04-414a-4e44-baf1-681a5572e752",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a senior developer who writes clean professional README.md files.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Generate a README.md with:\\n\\nProject Name: {{$json.name}}\\nDescription: {{ $json.description }}\\nTech Stack: {{$json.tech_stack}}\\n\\nFolder Structure:\\n{{$json.structure}}\\n\\nInclude:\\n- Title\\n- Description\\n- Tech stack\\n- Folder structure\\n- Usage instructions\\n\\nReturn only markdown.\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        336,
+        -208
+      ],
+      "id": "3abc896c-1b3c-4330-9803-c654347cb8af",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// 1. Get current node data (The File Tree from Step 4)\nconst repo = $json;\nconst tree = repo.tree || [];\nconst files = tree.map(f => f.path);\n\n// 2. REACH BACK to Step 3 for Name and Description\n// Note: Replace 'HTTP Request' with the EXACT name of your Step 3 node\nconst repoMetadata = $('HTTP Request').item.json;\n\n// 3. Detect tech stack\nlet tech = [];\n\nif (files.includes(\"package.json\")) tech.push(\"Node.js\");\nif (files.includes(\"requirements.txt\")) tech.push(\"Python\");\nif (files.includes(\"Dockerfile\")) tech.push(\"Docker\");\nif (files.some(f => f.endsWith(\".java\"))) tech.push(\"Java\");\nif (files.some(f => f.endsWith(\".go\"))) tech.push(\"Go\");\n\n// 4. Process structure\nconst structure = files.slice(0, 80).join(\"\\n\");\n\n// 5. Escape newlines for JSON safety\nconst safeStructure = structure.replace(/\\n/g, \"\\\\n\");\n\nreturn {\n    name: repoMetadata.name || \"Unknown Project\",\n    description: repoMetadata.description || \"No description provided\",\n    tech_stack: tech.length > 0 ? tech.join(\", \") : \"Unknown\",\n    structure: safeStructure\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        -208
+      ],
+      "id": "8a8d14f7-1880-4163-8865-dbfd72b374c2",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {
+    "HTTP Request": [
+      {
+        "json": {
+          "id": 250671883,
+          "node_id": "MDEwOlJlcG9zaXRvcnkyNTA2NzE4ODM=",
+          "name": "project_corona_tracker",
+          "full_name": "adrianhajdin/project_corona_tracker",
+          "private": false,
+          "owner": {
+            "login": "adrianhajdin",
+            "id": 24898559,
+            "node_id": "MDQ6VXNlcjI0ODk4NTU5",
+            "avatar_url": "https://avatars.githubusercontent.com/u/24898559?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/adrianhajdin",
+            "html_url": "https://github.com/adrianhajdin",
+            "followers_url": "https://api.github.com/users/adrianhajdin/followers",
+            "following_url": "https://api.github.com/users/adrianhajdin/following{/other_user}",
+            "gists_url": "https://api.github.com/users/adrianhajdin/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/adrianhajdin/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/adrianhajdin/subscriptions",
+            "organizations_url": "https://api.github.com/users/adrianhajdin/orgs",
+            "repos_url": "https://api.github.com/users/adrianhajdin/repos",
+            "events_url": "https://api.github.com/users/adrianhajdin/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/adrianhajdin/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/adrianhajdin/project_corona_tracker",
+          "description": "This is a code repository for the corresponding YouTube video. In this tutorial, we are going to build and deploy a corona tracker application. Covered topics: React.js, Chart.js, Material UI, and much more.",
+          "fork": false,
+          "url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker",
+          "forks_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/forks",
+          "keys_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/teams",
+          "hooks_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/hooks",
+          "issue_events_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/events",
+          "assignees_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/tags",
+          "blobs_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/languages",
+          "stargazers_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/stargazers",
+          "contributors_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/contributors",
+          "subscribers_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/subscribers",
+          "subscription_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/subscription",
+          "commits_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/merges",
+          "archive_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/downloads",
+          "issues_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/labels{/name}",
+          "releases_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/adrianhajdin/project_corona_tracker/deployments",
+          "created_at": "2020-03-27T23:30:03Z",
+          "updated_at": "2026-04-13T20:49:15Z",
+          "pushed_at": "2024-07-22T14:16:21Z",
+          "git_url": "git://github.com/adrianhajdin/project_corona_tracker.git",
+          "ssh_url": "git@github.com:adrianhajdin/project_corona_tracker.git",
+          "clone_url": "https://github.com/adrianhajdin/project_corona_tracker.git",
+          "svn_url": "https://github.com/adrianhajdin/project_corona_tracker",
+          "homepage": "https://covid19statswebsite.netlify.com/",
+          "size": 832,
+          "stargazers_count": 1467,
+          "watchers_count": 1467,
+          "language": "JavaScript",
+          "has_issues": true,
+          "has_projects": true,
+          "has_downloads": true,
+          "has_wiki": true,
+          "has_pages": false,
+          "has_discussions": false,
+          "forks_count": 516,
+          "mirror_url": null,
+          "archived": false,
+          "disabled": false,
+          "open_issues_count": 47,
+          "license": null,
+          "allow_forking": true,
+          "is_template": false,
+          "web_commit_signoff_required": false,
+          "has_pull_requests": true,
+          "pull_request_creation_policy": "all",
+          "topics": [
+            "react",
+            "react-charts",
+            "react-project",
+            "reactjs"
+          ],
+          "visibility": "public",
+          "forks": 516,
+          "open_issues": 47,
+          "watchers": 1467,
+          "default_branch": "master",
+          "temp_clone_token": null,
+          "network_count": 516,
+          "subscribers_count": 25
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in Python",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "aa9a22f6-1a99-4efe-a378-8f33fea3411f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "273518ce38626b9ee0e3f9137eda082981972c850f1f127ac88e7e32bb5f690f"
+  },
+  "id": "HOrxtNAfgJXU8mxT",
+  "tags": []
+}
