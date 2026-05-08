@@ -1,4 +1,4 @@
-# 🐳 Docker – Notes
+# Docker – Notes
 
 ## 1. What is Docker?
 
@@ -334,7 +334,7 @@ volumes:
   pgdata:
 ```
 
-✅ Explanation:
+Explanation:
 
 * `web` service runs your FastAPI app
 * `db` service runs PostgreSQL

@@ -89,14 +89,14 @@ X.describe()
 Use the scikit-learn library to create your models.
 
 The steps to building and using a model are:
-- Define: 
+- Define : 
     What type of model will it be? A decision tree? Some other type of model Some other parameters of the model type are specified too.
 
-- Fit: 
+- Fit : 
     Capture patterns from provided data. This is the heart of modeling.
-- Predict: 
+- Predict : 
     Just what it sounds like
-- Evaluate: 
+- Evaluate : 
     Determine how accurate the model's predictions are.
 
 

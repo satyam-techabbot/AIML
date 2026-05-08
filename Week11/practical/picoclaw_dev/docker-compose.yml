@@ -1,0 +1,16 @@
+services:
+  picoclaw:
+    image: ghcr.io/sipeed/picoclaw:latest
+    container_name: picoclaw
+    volumes:
+      - ./data:/root/.picoclaw
+    ports:
+      - "18800:18800" # UI Port
+      - "18790:18790" # API Port
+    environment:
+      - PICO_MODE=gateway
+      - PICO_WEB_ENABLE=true
+      - PICO_WEB_PORT=18800
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

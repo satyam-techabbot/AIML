@@ -17,7 +17,13 @@ NumPy shines when there are large quantities of “homogeneous” (same-type) da
 One way to initialize an array is using a Python sequence, such as a list.
 ```
 a = np.array([1, 2, 3, 4, 5, 6])
-a = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
+a = np.array (
+    [
+        [1, 2, 3, 4], 
+        [5, 6, 7, 8], 
+        [9, 10, 11, 12]
+    ]
+)
 ```
 
 > In NumPy, a dimension of an array is sometimes referred to as an “axis”.
