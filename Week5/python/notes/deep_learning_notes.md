@@ -1,3 +1,5 @@
+    
+
 # **Deep Learning**
 
 * A subset of **machine learning** focused on **artificial neural networks** with multiple layers.
@@ -7,6 +9,7 @@
 ---
 
 ### DL vs ML:
+
 As the size of data increase ML performance shows no increment while DL's performance still increases.
 
 ---
@@ -25,6 +28,7 @@ As the size of data increase ML performance shows no increment while DL's perfor
 ---
 
 ### Types of Neural Networks
+
 A neural network in deep learning is a computational model inspired by the human brain, designed to recognize patterns and process data through interconnected layers of artificial neurons.
 
 * **Feedforward Neural Networks (FNN)** – simplest type, data flows one way.
@@ -57,20 +61,20 @@ A neural network in deep learning is a computational model inspired by the human
 * Prone to **overfitting**.
 * **Interpretability** is often limited (“black box”).
 
-
 ---
-
 
 ## **Perceptron**
 
 ### Definition
-* A **perceptron** is the **simplest artificial neural network (single neuron model)** and acts as a single-layer, feed-forward model. 
-* Used for **binary classification** (output = 0 or 1). 
-* Introduced by **Frank Rosenblatt (1957)**. 
+
+* A **perceptron** is the **simplest artificial neural network (single neuron model)** and acts as a single-layer, feed-forward model.
+* Used for **binary classification** (output = 0 or 1).
+* Introduced by **Frank Rosenblatt (1957)**.
 
 ---
 
 ### Basic Idea
+
 * Mimics a **biological neuron**.
 * Takes inputs → multiplies by weights → sums them → applies activation → gives output.
 
@@ -82,13 +86,14 @@ A neural network in deep learning is a computational model inspired by the human
 * **Weights (w₁, w₂, …)** → importance of inputs
 * **Bias (b)** → shifts decision boundary
 * **Weighted Sum:**
-  [
+  ```math
   z = \sum w_i x_i + b
-  ]
+  ```
 * **Activation Function** → decides output
 * **Output (y)** → final prediction (0 or 1)
 
 ### Example
+
 ```python
 # 1) Imports
 import numpy as np
@@ -170,19 +175,23 @@ plt.show()
 ### Learning Rule (Weight Update)
 
 * Weights updated using error:
-  [
-  w = w + \eta (y_{true} - y_{pred}) x
-  ]
-* **η (learning rate)** controls update size 
+
+  ```math
+    w = w + \eta (y_{true} - y_{pred}) x
+  ```
+
+* **η (learning rate)** controls update size
 
 ---
 
 ### Example
+
 * Can model **logic gates (AND, OR)** by adjusting weights and bias.
 
 ---
 
 ### Advantages
+
 * Simple and easy to implement
 * Fast for small problems
 * Foundation of neural networks
@@ -190,6 +199,7 @@ plt.show()
 ---
 
 ### Limitations
+
 * Only works for **linearly separable data**
 * Cannot solve problems like **XOR**
 * Single-layer → cannot learn complex patterns
@@ -197,13 +207,14 @@ plt.show()
 ---
 
 ### Importance
+
 * Building block of **deep learning models**
 * Leads to **Multilayer Perceptron (MLP)** and modern neural networks
 
 #### **NOTE**
 
 > Loss function vs Cost function :-
-    Scope: loss function for specific value while cost function is for all dataset.
+> Scope: loss function for specific value while cost function is for all dataset.
 
 ### Multilayer Perceptron (MLP)
 
@@ -212,28 +223,37 @@ If the problem is not linear seperable, so to classify we will use MLP.
 ![alt text](./images/image.png)
 
 We will have Part 1 of Hidden layer 1 as:
+
 ```math
 Z = \sum_{i=1}^n w_i^T x_i + b_1
 ```
+
 or
+
 ```math
 Z = x_1 . w_1 + x_2 . w_2 + x_3 . w_3 + b_1 
 ```
+
 Part 2: Activation Function
+
 ```math
 f(Z) = 1 / (1 + e^{-Z}) = 0.759
 ```
 
 Hidden layer 2
+
 ```math
 Z = O_1 (Output of layer 1) + w_4 + b_2 = 0.04518
 ```
+
 Part 2: Activation Function
+
 ```math
 f(Z) = 1 / (1 + e^{-Z}) = 0.51129
 ```
 
 After that we will find loss using loss function:
+
 ```math
 f(n) = (actual - predicted) = (1 - 0.51129) = 0.49
 ```
@@ -243,6 +263,7 @@ So, to reduce the error, we update the weights and it is called as back propagat
 ### Back Propagation in Multilayer Perceptron
 
 > Weight update formula:
+
 ```math
 W_{new} = W_{old} - \eta \frac{\partial L}{\partial W_{old}}
 ```
@@ -258,16 +279,19 @@ Chain Rule of derivative:
 Backpropagation uses the chain rule to calculate the gradient of the loss function with respect to each weight in a multilayer perceptron (MLP), enabling efficient updates.
 
 Formula
+
 ```math
 \frac{dy}{dx} = \frac{dy}{du} . \frac{du}{dx} 
 ```
 
 ### Vanishing Gradient Problem
+
 The vanishing gradient problem occurs when gradients become very small (≈ 0) during backpropagation.
 
 As a result, early layers (closer to input) learn very slowly or stop learning.
 
 #### Where It Happens
+
 - Common in deep neural networks (MLPs with many layers)
 - Especially when using Sigmoid or Tanh activation functions
 
@@ -276,23 +300,28 @@ As a result, early layers (closer to input) learn very slowly or stop learning.
 # Activation Functions
 
 ## Sigmoid Function
+
 * The **sigmoid function** is a **non-linear activation function** used in neural networks.
 * It maps any real value to a range between **0 and 1**.
 
 ---
 
 #### Mathematical Formula
+
 ```math
 \sigma(x) = \frac{1}{1 + e^{-x}}
 ```
 
 #### Derivative
+
 ```math
 \sigma'(x) = \sigma(x)(1 - \sigma(x))
 ```
+
 ---
 
 #### Why Sigmoid is Used
+
 * Smooth and differentiable
 * Output interpretable as probability
 * Useful in:
@@ -302,6 +331,7 @@ As a result, early layers (closer to input) learn very slowly or stop learning.
 ---
 
 #### Advantages
+
 * Simple and mathematically elegant
 * Differentiable everywhere
 * Output bounded (0 to 1)
@@ -309,29 +339,34 @@ As a result, early layers (closer to input) learn very slowly or stop learning.
 ---
 
 #### Disadvantages
+
 * ❌ Vanishing Gradient Problem
-    * Derivative:
-    ```math
-    \sigma'(x) \leq 0.25
-    ```
-    * Causes gradients to shrink
 
+  * Derivative:
+
+  ```math
+  \sigma'(x) \leq 0.25
+  ```
+
+  * Causes gradients to shrink
 * ❌ Saturation
-    * For large |x|:
-        * Output ≈ 0 or 1
-        * Gradient ≈ 0
 
+  * For large |x|:
+    * Output ≈ 0 or 1
+    * Gradient ≈ 0
 * ❌ Not Zero-Centered
-    * Output always positive → slows learning
 
+  * Output always positive → slows learning
 
 ## Tanh Function
+
 * **Tanh (Hyperbolic Tangent)** is a **non-linear activation function**.
 * It maps input values to a range between **−1 and +1**.
 
 ---
 
 ### Mathematical Formula
+
 ```math
 \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
 ```
@@ -339,14 +374,18 @@ As a result, early layers (closer to input) learn very slowly or stop learning.
 ---
 
 ### Graph Intuition
+
 * S-shaped curve (similar to sigmoid but centered at 0)
 * Key points:
+
 ```math
   * ( x \to +\infty \Rightarrow \tanh(x) \to 1 )
 ```
+
 ```math
   * ( x \to -\infty \Rightarrow \tanh(x) \to -1 )
 ```
+
 ```math
   * ( x = 0 \Rightarrow \tanh(x) = 0 )
 ```
@@ -354,17 +393,20 @@ As a result, early layers (closer to input) learn very slowly or stop learning.
 ---
 
 ### Derivative
+
 ```math
 \tanh'(x) = 1 - \tanh^2(x)
 ```
 
 ### Why Tanh is Used
+
 * Zero-centered output → improves gradient updates
 * Better than sigmoid for **hidden layers**
 
 ---
 
 ### Advantages
+
 * Zero-centered (faster convergence than sigmoid)
 * Smooth and differentiable
 * Strong gradients near 0
@@ -372,14 +414,16 @@ As a result, early layers (closer to input) learn very slowly or stop learning.
 ---
 
 ### Disadvantages
-*  Vanishing Gradient Problem
-*  Saturation
-    * Output becomes flat near -1 and 1
-    * Learning slows down
+
+* Vanishing Gradient Problem
+* Saturation
+  * Output becomes flat near -1 and 1
+  * Learning slows down
 
 ---
 
 ### Where It Is Used
+
 * Hidden layers (older neural networks)
 * Sometimes in:
   * RNNs
@@ -388,14 +432,17 @@ As a result, early layers (closer to input) learn very slowly or stop learning.
 ---
 
 ## Relu activation function
+
 The **ReLU activation function** (Rectified Linear Unit) is one of the most widely used activation functions in deep learning.
 
 ---
 
 ### 🔹 Definition
+
 ```math
 \text{ReLU}(x) = \max(0, x)
 ```
+
 ---
 
 ### 🔹 Output Behavior
@@ -408,6 +455,7 @@ So the range is: $[0, \infty)$
 ---
 
 ### 🔹 Graph Behavior
+
 * Flat (0) for negative inputs
 * Linear (straight line) for positive inputs
 * Looks like a “hinge” at 0
@@ -419,23 +467,22 @@ So the range is: $[0, \infty)$
 1. **Non-linear**
 
    * Even though it looks linear for ( x > 0 ), overall it's non-linear
-
 2. **Computationally efficient**
 
    * Very simple: just a comparison
-
 3. **Sparse activation**
 
    * Many neurons output 0 → efficient and reduces overfitting
-
 4. **Derivative**
-```math 
+
+```math
 \frac{d}{dx} = \begin{cases}1 & x > 0 ,\ 0 & x \leq 0 \end{cases} 
 ```
 
 ---
 
 ### 🔹 Advantages
+
 * 🚀 **Fast computation**
 * 📈 **Avoids vanishing gradient (for positive values)**
 * 🧠 Helps deep networks train efficiently
@@ -444,62 +491,70 @@ So the range is: $[0, \infty)$
 ---
 
 ### 🔹 Disadvantages
+
 1. **Dying ReLU problem**
+
    * Neurons can get stuck outputting 0
    * Happens when weights push inputs into negative region permanently
-
 2. **Not zero-centered**
+
    * Outputs only positive values
 
 ---
 
 ### 🔹 Variants of ReLU
+
 To fix its problems, several variants exist:
+
 * **Leaky ReLU**
   Small slope for negative values (e.g., 0.01x)
-
 * **Parametric ReLU (PReLU)**
   Learnable slope for negative part
-
 * **ELU (Exponential Linear Unit)**
   Smooth negative values
 
 ---
 
 ### 🔹 When to Use
+
 * Default choice for:
+
   * Hidden layers in deep neural networks
   * CNNs (Convolutional Neural Networks)
-
 * Often replaced only if:
+
   * You face dying ReLU → use Leaky ReLU/ELU
 
 ---
 
 ### 🔹 Comparison with tanh
-| Feature        | ReLU   | tanh    |
-| -------------- | ------ | ------- |
+
+| Feature        | ReLU    | tanh    |
+| -------------- | ------- | ------- |
 | Range          | [0, ∞) | (-1, 1) |
-| Speed          | Fast   | Slower  |
-| Vanishing Grad | ❌ Less | ✅ More  |
-| Zero-centered  | ❌ No   | ✅ Yes   |
+| Speed          | Fast    | Slower  |
+| Vanishing Grad | ❌ Less | ✅ More |
+| Zero-centered  | ❌ No   | ✅ Yes  |
 
 ---
 
 ### 🔹 Simple Intuition
 
 ReLU acts like a **filter**:
+
 * Keeps positive signals
 * Completely blocks negative ones
 
 ---
 
 ## Leaky Relu and Parametric Relu
+
 Both **Leaky ReLU** and **Parametric ReLU (PReLU)** are improvements over the standard ReLU designed to fix the **dying ReLU problem** (where neurons get stuck outputting 0).
 
 ---
 
 #### 🔹Leaky ReLU
+
 ```math
 f(x) =
 \begin{cases}
@@ -513,6 +568,7 @@ x & x > 0 ,\
 ---
 
 #### 🔹 Behavior
+
 * Positive inputs → same as ReLU
 * Negative inputs → small non-zero output
 
@@ -544,6 +600,7 @@ Instead of making negative values **0**, it allows a **small slope**, so neurons
 ---
 
 ### 🔹 Parametric ReLU (PReLU)
+
 ```math
 f(x) =
 \begin{cases}
@@ -557,17 +614,20 @@ x & x > 0 ,\
 ---
 
 #### 🔹 Behavior
+
 * Same structure as Leaky ReLU
 * But slope for negative inputs is **adaptive**
 
 ---
 
 #### 🔹 Key Idea
+
 Let the network **learn the best value of ( $\alpha$ )** instead of setting it manually.
 
 ---
 
 #### 🔹 Advantages
+
 * More flexible than Leaky ReLU
 * Can improve model performance
 * Learns optimal negative slope
@@ -575,6 +635,7 @@ Let the network **learn the best value of ( $\alpha$ )** instead of setting it m
 ---
 
 #### 🔹 Disadvantages
+
 * Slightly more computation
 * Risk of overfitting (extra parameter)
 
@@ -592,6 +653,7 @@ Let the network **learn the best value of ( $\alpha$ )** instead of setting it m
 ---
 
 #### 🔹 When to Use
+
 * **ReLU** → default choice
 * **Leaky ReLU** → if neurons are dying
 * **PReLU** → when you want better performance and can afford extra parameters
@@ -599,6 +661,7 @@ Let the network **learn the best value of ( $\alpha$ )** instead of setting it m
 ---
 
 ## ELU activation function
+
 The **ELU (Exponential Linear Unit)** is an activation function used in deep learning to improve learning speed and performance compared to functions like ReLU.
 
 ```math
@@ -611,12 +674,14 @@ The **ELU (Exponential Linear Unit)** is an activation function used in deep lea
 ---
 
 #### 🔹 Intuition
+
 * For **positive values** → behaves like **ReLU** (linear)
 * For **negative values** → produces smooth negative outputs instead of zero
 
 ---
 
 #### 🔹 Key Properties
+
 * Smooth Curve
 * Negative Outputs
 * Avoids Dead Neurons
@@ -635,6 +700,7 @@ The **ELU (Exponential Linear Unit)** is an activation function used in deep lea
 ---
 
 #### 🔹 Advantages
+
 * Faster convergence during training
 * Better performance in deeper networks
 * Reduces bias shift (mean closer to zero)
@@ -642,12 +708,14 @@ The **ELU (Exponential Linear Unit)** is an activation function used in deep lea
 ---
 
 #### 🔹 Disadvantages
+
 * More computationally expensive (uses exponential)
-* Requires tuning of ( \alpha ) (though often 1 works well)
+* Requires tuning of ( ```\alpha``` ) (though often 1 works well)
 
 ---
 
 #### 🔹 When to Use ELU
+
 * Deep neural networks where **training is slow or unstable**
 * When you want **better gradient flow**
 * As an alternative to ReLU or Leaky ReLU
@@ -655,6 +723,7 @@ The **ELU (Exponential Linear Unit)** is an activation function used in deep lea
 ---
 
 ## Softmax Activation Function
+
 The **Softmax activation function** is widely used in deep learning for **multi-class classification problems**. It converts raw model outputs (logits) into probabilities.
 
 ---
@@ -668,6 +737,7 @@ For a vector ( $z = [z_1, z_2, ..., z_n]$ ), Softmax is defined as:
 ---
 
 #### 🔹 Intuition
+
 * Takes any real-valued numbers (logits)
 * Converts them into:
   * **Probabilities (0 to 1)**
@@ -678,9 +748,9 @@ For a vector ( $z = [z_1, z_2, ..., z_n]$ ), Softmax is defined as:
 ---
 
 #### 🔹 Example
+
 Suppose a model outputs:
 $ [2.0, 1.0, 0.1] $
-
 
 After applying Softmax:
 $ [0.66, 0.24, 0.10] $
@@ -692,6 +762,7 @@ $ [0.66, 0.24, 0.10] $
 ---
 
 #### 🔹 Key Properties
+
 * Probability Distribution
 * Emphasizes Larger Values
 * Differentiable
@@ -699,6 +770,7 @@ $ [0.66, 0.24, 0.10] $
 ---
 
 #### 🔹 Where It Is Used
+
 * Final layer of neural networks for:
   * Image classification
   * Text classification
@@ -717,6 +789,7 @@ $ [0.66, 0.24, 0.10] $
 ---
 
 #### 🔹 Advantages
+
 * Interpretable probabilities
 * Works well with **categorical cross-entropy loss**
 * Highlights the most likely class clearly
@@ -724,6 +797,7 @@ $ [0.66, 0.24, 0.10] $
 ---
 
 #### 🔹 Disadvantages
+
 * Sensitive to large input values (can cause overflow)
 * Not suitable for multi-label classification
 * Can become overconfident (very high probabilities)
@@ -731,7 +805,9 @@ $ [0.66, 0.24, 0.10] $
 ---
 
 #### 🔹 Numerical Stability Trick
+
 To avoid overflow:
+
 ```math
 \text{Softmax}(z_i) = \frac{e^{z_i - \max(z)}}{\sum e^{z_j - \max(z)}} 
 ```
@@ -744,9 +820,10 @@ To avoid overflow:
   * **Multi-class classification**
   * Only **one correct class per input**
 
---- 
+---
 
 ## **Which activation function to use when?**
+
 ```flowchart
 Start
   │
@@ -765,7 +842,7 @@ Start
   │             └── Advanced models → GELU
 ```
 
---- 
+---
 
 # Cost & Loss Function
 
@@ -781,6 +858,7 @@ Start
     - Sparse Categorical Cross Entropy
 
 #### 🔷 What is Cost vs Loss Function?
+
 * **Loss Function**: Error for a *single data point*
 * **Cost Function**: Average loss over *entire dataset*
 
@@ -795,26 +873,32 @@ Start
 ### 1. Mean Squared Error (MSE)
 
 #### Intuition
+
 * Penalizes **large errors more** (squared term)
 * Smooth and differentiable → good for gradient descent
 
 #### Equation
+
 Loss:
+
 ```math
 L = (y - \hat{y})^2 
 ```
 
 Cost:
+
 ```math
 J = \frac{1}{n} \sum (y_i - \hat{y}_i)^2 
 ```
 
 #### Advantages
+
 * Easy to compute and differentiate
 * Strongly penalizes large errors
 * Works well for normally distributed errors
 
 #### Disadvantages
+
 * Very sensitive to **outliers**
 * Can cause large gradients → unstable training
 
@@ -823,36 +907,45 @@ J = \frac{1}{n} \sum (y_i - \hat{y}_i)^2
 ### 2. Mean Absolute Error (MAE)
 
 #### Intuition
+
 * Measures **absolute difference**
 * Treats all errors equally
 
 #### Equation
+
 Loss:
-```math 
+
+```math
 L = |y - \hat{y}| 
 ```
 
 Cost:
+
 ```math
 J = \frac{1}{n} \sum |y_i - \hat{y}_i| 
 ```
 
 #### Advantages
+
 * Robust to **outliers**
 * Simple interpretation
 
 #### Disadvantages
+
 * Not differentiable at 0
 * Slower convergence (constant gradient)
 
 ---
 
 ### 3. Huber Loss
+
 #### Intuition
+
 * Combines **MSE + MAE**
 * Uses MSE for small errors, MAE for large errors
 
 #### Equation
+
 ```math
 L =
 \begin{cases}
@@ -861,16 +954,19 @@ L =
 \end{cases}
 ```
 
-Cost: 
-```math 
+Cost:
+
+```math
 J = \frac{1}{n} \sum L_i 
-``` 
+```
 
 #### Advantages
+
 * Robust to outliers
 * Smooth near zero → stable gradients
 
 #### Disadvantages
+
 * Need to tune **δ (delta)**
 * Slightly more complex
 
@@ -879,19 +975,23 @@ J = \frac{1}{n} \sum L_i
 ### 4. Root Mean Squared Error (RMSE)
 
 #### Intuition
+
 * Same as MSE but in **original scale**
 * Easier to interpret
 
 #### Equation
+
 ```math
 RMSE = \sqrt{ \frac{1}{n} \sum (y_i - \hat{y}_i)^2 } 
 ```
 
 #### Advantages
+
 * Same unit as output
 * Penalizes large errors
 
 #### Disadvantages
+
 * Sensitive to outliers (like MSE)
 * Extra computation (sqrt)
 
@@ -902,25 +1002,30 @@ RMSE = \sqrt{ \frac{1}{n} \sum (y_i - \hat{y}_i)^2 }
 ### 1. Binary Cross Entropy (BCE)
 
 #### Intuition
+
 * Measures difference between **true label & predicted probability**
 * Used for **binary classification (0/1)**
 
 #### Equation
+
 ```math
 L = -[y \log(\hat{y}) + (1-y)\log(1-\hat{y})] 
 ```
 
 Cost:
+
 ```
 J = \frac{1}{n} \sum L_i 
 ```
 
 #### Advantages
+
 * Works well with **sigmoid activation**
 * Probabilistic interpretation
 * Strong gradients when wrong
 
 #### Disadvantages
+
 * Sensitive to **log(0)** (needs clipping)
 * Poor for class imbalance (unless weighted)
 
@@ -929,24 +1034,29 @@ J = \frac{1}{n} \sum L_i
 ### 2. Categorical Cross Entropy (CCE)
 
 #### Intuition
+
 * Used for **multi-class classification (one-hot labels)**
 * Compares full probability distribution
 
 #### Equation
+
 ```math
 L = - \sum_{j=1}^{k} y_j \log(\hat{y}_j) 
 ```
 
 Cost:
+
 ```math
 J = \frac{1}{n} \sum L_i 
 ```
 
 #### Advantages
+
 * Works with **softmax output**
 * Efficient for multi-class problems
 
 #### Disadvantages
+
 * Requires **one-hot encoding**
 * Memory inefficient for large classes
 
@@ -955,18 +1065,22 @@ J = \frac{1}{n} \sum L_i
 ### 3. Sparse Categorical Cross Entropy (SCCE)
 
 #### Intuition
+
 * Same as CCE but labels are **integers (not one-hot)**
 
 #### Equation
+
 ```math
 L = - \log(\hat{y}*{y*{true}}) 
 ```
 
 #### Advantages
+
 * No need for one-hot encoding
 * Memory efficient
 
 #### Disadvantages
+
 * Less intuitive
 * Requires correct label indexing
 
@@ -987,21 +1101,21 @@ L = - \log(\hat{y}*{y*{true}})
 ---
 
 # Gradient Descent Optimizers
+
 If we draw a graph of Weights against Loss then we will have hyperbola.
 
 ***Gradient descent optimizers*** are algorithms used in deep learning to iteratively adjust a model's parameters (weights and biases) to minimize the loss function, which measures the error in the model's predictions.
 
-- Epoch: 
-  - An epoch represents one complete pass of the neural network through the entire training dataset. 
-  
+- Epoch:
+
+  - An epoch represents one complete pass of the neural network through the entire training dataset.
   - Training a model usually requires multiple epochs to achieve optimal performance, with the process potentially repeating many times until the model converges or begins to overfit the training data.
+- Iteration:
 
-- Iteration: 
-  - An iteration is a single update of the model's parameters. 
-  
+  - An iteration is a single update of the model's parameters.
   - It occurs after the model has processed one batch (or mini-batch/single sample, depending on the gradient descent variant) of data.
-
 - The total number of iterations in one epoch is calculated by dividing the total number of training samples by the batch size:
+
 ```math
 \text{Iterations per Epoch} = \frac{\text{Total Training Samples}}{\text{Batch Size}}
 ```
@@ -1021,16 +1135,19 @@ SGD is an optimization algorithm used to minimize a loss function in deep learni
 #### 🔹 Mathematical Intuition
 
 We want to minimize a loss function:
+
 ```math
 L(\theta) = \frac{1}{N} \sum_{i=1}^{N} \ell(x_i, y_i, \theta) 
 ```
 
 Instead of computing full gradient:
+
 ```math
 \nabla L(\theta)
 ```
 
 SGD approximates it using one sample:
+
 ```math
 \theta = \theta - \eta \cdot \nabla \ell(x_i, y_i, \theta)
 ```
@@ -1046,6 +1163,7 @@ Intuition: noisy but fast steps toward minimum.
 ---
 
 #### 🔹 Process
+
 1. Initialize parameters (\theta)
 2. Shuffle dataset
 3. For each sample:
@@ -1056,6 +1174,7 @@ Intuition: noisy but fast steps toward minimum.
 ---
 
 #### 🔹 Advantages
+
 * Fast updates (low computation per step)
 * Can escape local minima due to noise
 * Works well for large datasets
@@ -1063,6 +1182,7 @@ Intuition: noisy but fast steps toward minimum.
 ---
 
 #### 🔹 Disadvantages
+
 * High variance (noisy updates)
 * Unstable convergence
 * May oscillate around minimum
@@ -1076,12 +1196,15 @@ Instead of one sample, updates are computed using a **small batch of data (e.g.,
 ---
 
 #### 🔹 Mathematical Intuition
+
 Gradient is computed over a mini-batch:
+
 ```math
 \theta = \theta - \eta \cdot \frac{1}{B} \sum_{i=1}^{B} \nabla \ell(x_i, y_i, \theta)
 ```
 
 Where:
+
 * $B$ = batch size
 
 Intuition: balance between accuracy (batch GD) and speed (SGD).
@@ -1089,6 +1212,7 @@ Intuition: balance between accuracy (batch GD) and speed (SGD).
 ---
 
 #### 🔹 Process
+
 1. Shuffle dataset
 2. Divide into mini-batches
 3. For each batch:
@@ -1099,6 +1223,7 @@ Intuition: balance between accuracy (batch GD) and speed (SGD).
 ---
 
 #### 🔹 Advantages
+
 * More stable than SGD
 * Efficient on GPUs (parallel computation)
 * Faster convergence than full batch GD
@@ -1106,6 +1231,7 @@ Intuition: balance between accuracy (batch GD) and speed (SGD).
 ---
 
 #### 🔹 Disadvantages
+
 * Still some noise in updates
 * Requires tuning batch size
 * Memory usage higher than SGD
@@ -1113,26 +1239,32 @@ Intuition: balance between accuracy (batch GD) and speed (SGD).
 ---
 
 ### 3. SGD with Momentum
+
 Momentum improves SGD by adding a **velocity term** that accumulates past gradients to smooth updates.
 
 ---
 
 #### 🔹 Mathematical Intuition
+
 Velocity update:
+
 ```math
 v_t = \gamma v_{t-1} + \eta \nabla L(\theta) 
 ```
 
 Parameter update:
+
 ```math
 \theta = \theta - v_t 
 ```
 
 Where:
+
 * $v_t$ = velocity
 * $\gamma$ = momentum coefficient (e.g., 0.9)
 
 Intuition:
+
 * Like a **ball rolling downhill**
 * Builds speed in consistent direction
 * Reduces oscillation in steep directions
@@ -1140,6 +1272,7 @@ Intuition:
 ---
 
 #### 🔹 Process
+
 1. Initialize $\theta$ and velocity $v=0$
 2. For each batch:
    * Compute gradient
@@ -1150,6 +1283,7 @@ Intuition:
 ---
 
 #### 🔹 Advantages
+
 * Faster convergence
 * Reduces oscillations
 * Helps in ravines (uneven loss surfaces)
@@ -1157,6 +1291,7 @@ Intuition:
 ---
 
 #### 🔹 Disadvantages
+
 * Extra hyperparameter ($\gamma$)
 * Can overshoot minima if not tuned
 * Slightly more computation
@@ -1179,34 +1314,40 @@ Here are well-structured notes on **adaptive optimization methods** used with SG
 
 ### 1. AdaGrad (Adaptive Gradient Algorithm)
 
-AdaGrad adapts the learning rate **individually for each parameter** based on past gradients. 
+AdaGrad adapts the learning rate **individually for each parameter** based on past gradients.
 
 Frequently updated parameters get smaller learning rates, while infrequent ones get larger updates.
 
 ---
 
 #### 🔹 Mathematical Intuition
+
 Accumulate squared gradients:
+
 ```math
 G_t = G_{t-1} + (\nabla L(\theta))^2
 ```
 
 Update rule:
+
 ```math
 \theta = \theta - \frac{\eta}{\sqrt{G_t + \epsilon}} \cdot \nabla L(\theta)
 ```
 
 Where:
+
 * $G_t$ = sum of squared past gradients
 * $\epsilon$ = small constant (to avoid division by zero)
 
 Intuition:
+
 * Parameters with large gradients → smaller steps
 * Parameters with small gradients → larger steps
 
 ---
 
 #### 🔹 Process
+
 1. Initialize parameters $\theta$ and $G = 0$
 2. For each iteration:
    * Compute gradient
@@ -1217,6 +1358,7 @@ Intuition:
 ---
 
 #### 🔹 Advantages
+
 * No need to manually tune learning rate much
 * Works well for sparse data (e.g., NLP)
 * Per-parameter learning rates
@@ -1224,6 +1366,7 @@ Intuition:
 ---
 
 #### 🔹 Disadvantages
+
 * Learning rate keeps decreasing
 * Can stop learning too early
 * Not suitable for deep networks long-term
@@ -1231,31 +1374,38 @@ Intuition:
 ---
 
 ### 2. RMSProp (Root Mean Square Propagation)
+
 RMSProp fixes AdaGrad’s issue by using a **moving average of squared gradients** instead of accumulating them indefinitely.
 
 ---
 
 #### 🔹 Mathematical Intuition
+
 Exponential moving average:
+
 ```math
 E[g^2]*t = \beta E[g^2]*{t-1} + (1 - \beta)(\nabla L(\theta))^2
 ```
 
 Update rule:
+
 ```math
 \theta = \theta - \frac{\eta}{\sqrt{E[g^2]_t + \epsilon}} \cdot \nabla L(\theta)
 ```
 
 Where:
+
 * $\beta \approx 0.9$
 
 Intuition:
+
 * Keeps recent gradient information
 * Prevents learning rate from shrinking too much
 
 ---
 
 #### 🔹 Process
+
 1. Initialize $\theta$, $E[g^2]=0$
 2. For each step:
    * Compute gradient
@@ -1265,6 +1415,7 @@ Intuition:
 ---
 
 #### 🔹 Advantages
+
 * Solves AdaGrad’s diminishing learning rate problem
 * Faster convergence
 * Works well for non-stationary problems
@@ -1272,6 +1423,7 @@ Intuition:
 ---
 
 #### 🔹 Disadvantages
+
 * Requires tuning ($\beta$)
 * No bias correction
 * May still be unstable in some cases
@@ -1279,7 +1431,9 @@ Intuition:
 ---
 
 ### 3. Adam Optimizer (Adaptive Moment Estimation)
+
 Adam combines:
+
 * Momentum (first moment)
 * RMSProp (second moment)
 
@@ -1288,28 +1442,34 @@ It is one of the most widely used optimizers in deep learning.
 ---
 
 #### 🔹 Mathematical Intuition
+
 First moment (mean):
+
 ```math
 m_t = \beta_1 m_{t-1} + (1 - \beta_1)\nabla L(\theta)
 ```
 
 Second moment (variance):
+
 ```math
 v_t = \beta_2 v_{t-1} + (1 - \beta_2)(\nabla L(\theta))^2
 ```
 
 Bias correction:
+
 ```math
 \hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad
 \hat{v}_t = \frac{v_t}{1 - \beta_2^t}
 ```
 
 Update rule:
+
 ```math
 \theta = \theta - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \cdot \hat{m}_t
 ```
 
 Intuition:
+
 * Momentum smooths direction
 * RMSProp scales learning rate
 * Bias correction stabilizes early training
@@ -1317,6 +1477,7 @@ Intuition:
 ---
 
 #### 🔹 Process
+
 1. Initialize $\theta$, $m=0$, $v=0$
 2. For each step:
    * Compute gradient
@@ -1327,6 +1488,7 @@ Intuition:
 ---
 
 #### 🔹 Advantages
+
 * Fast convergence
 * Works well in most problems
 * Combines benefits of momentum + RMSProp
@@ -1335,6 +1497,7 @@ Intuition:
 ---
 
 #### 🔹 Disadvantages
+
 * Can generalize worse than SGD in some cases
 * More memory usage (stores m and v)
 * Sometimes converges to suboptimal solutions
@@ -1356,13 +1519,16 @@ Intuition:
 The exploding gradient problem occurs when gradients become **very large during training**, causing unstable updates to model parameters.
 
 This is especially common in:
+
 * Deep neural networks
 * Recurrent Neural Networks (RNNs)
 
 ---
 
 #### 🔹 Mathematical Intuition
+
 In backpropagation, gradients are computed using the chain rule:
+
 ```math
 \frac{\partial L}{\partial \theta} = \prod_{i=1}^{n} \frac{\partial z_i}{\partial z_{i-1}}
 ```
@@ -1374,12 +1540,14 @@ If these derivatives are **greater than 1**, repeated multiplication causes:
 ```
 
 Intuition:
+
 * Multiplying many large numbers → very large gradients
 * Leads to huge parameter updates
 
 ---
 
 #### 🔹 Why It Happens
+
 * Deep networks (many layers)
 * Large weights
 * Poor initialization
@@ -1389,6 +1557,7 @@ Intuition:
 ---
 
 #### 🔹 Effects / Problems
+
 * Model becomes unstable
 * Loss fluctuates wildly or becomes NaN
 * Weights grow uncontrollably
@@ -1397,54 +1566,64 @@ Intuition:
 ---
 
 #### 🔹 Process (What Happens During Training)
+
 1. Forward pass computes loss
 2. Backpropagation computes gradients
 3. Gradients become very large
 4. Parameter update becomes huge:
-  ```math
+
+```math
    \theta = \theta - \eta \cdot \text{very large gradient}
-  ```
+```
+
 5. Model overshoots optimal solution
 
 ---
 
 #### 🔹 Solutions / Techniques
-1. Gradient Clipping :
-  Keeps gradients within a safe range
 
-  -  Limit gradient values: 
-  ```math
+1. Gradient Clipping :
+   Keeps gradients within a safe range
+
+- Limit gradient values:
+
+```math
    g = \frac{g}{|g|} \cdot \text{threshold} 
-  ```
+```
 
 ---
 
 2. Weight Initialization : Prevents large activations and gradients
-  * Use methods like:
-    * Uniform Distribution
-    * Xavier Initialization
-    * He Initialization
+
+* Use methods like:
+  * Uniform Distribution
+  * Xavier Initialization
+  * He Initialization
 
 ---
 
 3. Use Better Architectures : Helps stabilize gradient flow
-  * LSTM / GRU (for RNNs)
-  * Residual Networks (ResNet)
+
+* LSTM / GRU (for RNNs)
+* Residual Networks (ResNet)
 
 ---
 
 4. Normalize Inputs
-  * Batch Normalization
-  * Layer Normalization
+
+* Batch Normalization
+* Layer Normalization
 
 ---
 
 5. Lower Learning Rate
-  * Smaller updates prevent explosion
+
+* Smaller updates prevent explosion
 
 ---
 
 #### 🔹 Advantages (of understanding & handling it)
+
 * Stable training
 * Faster convergence
 * Enables deep network training
@@ -1452,6 +1631,7 @@ Intuition:
 ---
 
 #### 🔹 Disadvantages / Challenges
+
 * Requires tuning (e.g., clipping threshold)
 * Adds computational steps
 * Not always easy to detect early
@@ -1470,6 +1650,7 @@ Intuition:
 ---
 
 # Dropout Layers
+
 Dropout is a **regularization technique** used to prevent overfitting in neural networks by randomly “dropping” (i.e., deactivating) some neurons during training.
 
 At each training step, a subset of neurons is ignored.
@@ -1477,6 +1658,7 @@ At each training step, a subset of neurons is ignored.
 ---
 
 #### 🔹 Intuition (Conceptual Understanding)
+
 * Prevents neurons from becoming too dependent on each other
 * Forces the network to learn **robust and distributed features**
 * Acts like training many smaller networks (ensemble effect)
@@ -1484,6 +1666,7 @@ At each training step, a subset of neurons is ignored.
 ---
 
 #### 🔹 Process
+
 1. During training:
    * Randomly drop neurons in each forward pass
    * Perform backpropagation only on active neurons
@@ -1494,6 +1677,7 @@ At each training step, a subset of neurons is ignored.
 ---
 
 #### 🔹 Advantages
+
 * Reduces overfitting
 * Improves generalization
 * Simple and effective
@@ -1502,6 +1686,7 @@ At each training step, a subset of neurons is ignored.
 ---
 
 #### 🔹 Disadvantages
+
 * Slower convergence (training becomes noisy)
 * Requires tuning dropout rate
 * Not always effective for small datasets
@@ -1510,6 +1695,7 @@ At each training step, a subset of neurons is ignored.
 ---
 
 #### 🔹 Common Dropout Rates
+
 * Input layer: 0.1 – 0.3
 * Hidden layers: 0.3 – 0.5
 * Very deep networks: sometimes lower values
@@ -1517,6 +1703,7 @@ At each training step, a subset of neurons is ignored.
 ---
 
 #### 🔹 Where to Use
+
 * Fully connected layers (most common)
 * CNNs (usually after dense layers)
 * RNNs (carefully applied)
@@ -1524,6 +1711,7 @@ At each training step, a subset of neurons is ignored.
 ---
 
 #### 🔹 Variants
+
 * Spatial Dropout (for CNNs)
 * DropConnect (drops weights instead of neurons)
 
@@ -1542,6 +1730,7 @@ At each training step, a subset of neurons is ignored.
 ---
 
 # ANN Example:
+
 ```python
 import tensorflow as tf
 from tensorflow.keras import layers, models
@@ -1577,7 +1766,9 @@ print("Test Accuracy:", accuracy)
 ```
 
 # Convolutional Neural Networks (CNN)
+
 CNNs are a class of deep learning models primarily used for:
+
 * Image recognition
 * Computer vision tasks
 
@@ -1590,11 +1781,13 @@ They are designed to automatically and adaptively learn **spatial features** fro
 CNNs are inspired by the **visual cortex** in the human brain.
 
 Key idea:
+
 * Neurons respond to **specific regions** of the visual field
 * Hierarchical processing:
   * Detect edges → shapes → objects
 
 Similarly, CNN:
+
 * First layers detect edges
 * Middle layers detect patterns
 * Final layers detect objects
@@ -1602,11 +1795,13 @@ Similarly, CNN:
 ---
 
 ## 🔹 Convolutional Operation
+
 Convolution is the core operation where a **filter (kernel)** slides over the input image to extract features.
 
 ---
 
 ## 🔸 Mathematical Intuition
+
 For input (I) and kernel (K):
 
 ```math
@@ -1614,12 +1809,14 @@ S(i,j) = \sum_m \sum_n I(i+m, j+n) \cdot K(m,n)
 ```
 
 Intuition:
+
 * Multiply corresponding values
 * Sum them → produce a feature map value
 
 ---
 
 ## 🔸 Key Concepts
+
 * Kernel (filter): small matrix (e.g., 3×3)
 * Stride: step size of movement
 * Feature map: output after convolution
@@ -1627,13 +1824,16 @@ Intuition:
 ---
 
 ## 🔹 Padding
+
 Padding adds extra pixels (usually zeros) around input.
 
 #### 🔸 Types
+
 * **Valid padding** → no padding (output shrinks)
 * **Same padding** → output size same as input
 
 #### 🔸 Padding Techniques
+
 * Zero Padding : Fills padded space with zero
 * Neighbour Padding : Fills padded space with the neighbours value
 
@@ -1647,6 +1847,7 @@ Padding adds extra pixels (usually zeros) around input.
 ---
 
 ### 🔹 CNN vs ANN (Artificial Neural Network)
+
 | Feature            | CNN                     | ANN              |
 | ------------------ | ----------------------- | ---------------- |
 | Input              | Images (2D/3D)          | Flattened vector |
@@ -1656,24 +1857,29 @@ Padding adds extra pixels (usually zeros) around input.
 | Spatial info       | Preserved               | Lost             |
 
 Intuition:
+
 * CNN keeps image structure
 * ANN treats input as plain numbers
 
 ---
 
 ## 🔹 Pooling
+
 Pooling reduces spatial dimensions of feature maps.
 
 ---
 
 #### 🔸 Types
+
 * **Max Pooling** → takes maximum value
 * **Average Pooling** → takes average
 
 ---
 
 #### 🔸 Mathematical Example (Max Pooling)
+
 From a 2×2 region:
+
 ```math
 \begin{bmatrix}
 1 & 3 \ &
@@ -1685,6 +1891,7 @@ From a 2×2 region:
 ---
 
 #### 🔸 Intuition
+
 * Keeps important features
 * Reduces computation
 * Adds translation invariance
@@ -1692,20 +1899,24 @@ From a 2×2 region:
 ---
 
 #### 🔹 Advantages
+
 * Reduces overfitting
 * Speeds up computation
 
 ---
 
 #### 🔹 Disadvantages
+
 * Loss of some information
 
 ---
 
 ## 🔹 Flattening
+
 Flattening converts multi-dimensional feature maps into a **1D vector**.
 
 #### Example
+
 ```math
 \text{Feature map (2×2×3)} \rightarrow \text{vector (12×1)} 
 ```
@@ -1713,22 +1924,26 @@ Flattening converts multi-dimensional feature maps into a **1D vector**.
 ---
 
 #### Purpose
+
 * Prepare data for fully connected layers
 
 ---
 
 ## 🔹 Fully Connected Layers (Dense Layers)
+
 These layers connect every neuron to every neuron in the previous layer.
 
 ---
 
 #### 🔸 Role
+
 * Perform final classification
 * Combine extracted features
 
 ---
 
 #### 🔸 Mathematical Form
+
 ```math
 y = f(Wx + b) 
 ```
@@ -1736,12 +1951,14 @@ y = f(Wx + b)
 ---
 
 #### 🔸 Intuition
+
 * Acts like traditional neural network
 * Learns decision boundaries
 
 ---
 
 #### 🔹 Overall CNN Flow
+
 1. Input Image
 2. Convolution Layer
 3. Activation (ReLU)
@@ -1756,6 +1973,7 @@ y = f(Wx + b)
 ---
 
 ### Example
+
 ```python
 import tensorflow as tf
 from tensorflow.keras import layers, models
@@ -1801,7 +2019,8 @@ test_loss, test_acc = model.evaluate(x_test, y_test)
 
 print("Test Accuracy:", test_acc)
 ```
----
+
+---zz
 
 #### Quick Summary
 

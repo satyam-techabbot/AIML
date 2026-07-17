@@ -3,6 +3,7 @@
 Model persistence means **saving a trained ML model to disk and loading it later without retraining**. This is essential in **MLOps, APIs, and production systems**.
 
 In Python ML projects, the two most common tools are:
+
 * **Pickle**
 * **Joblib**
 
@@ -45,6 +46,7 @@ This is exactly what your **prediction route** is doing.
 Serialization converts a Python object into a **byte stream** that can be saved to a file.
 
 Example object:
+
 ```python
 RandomForestClassifier()
 ```
